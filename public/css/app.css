@@ -1,7 +1,163 @@
+:root {
+    --main_green: #0cce6b;
+    --sec_green: #20732c;
+    --main_grey: #a2abab;
+    --sec_grey: #98a2a2;
+    --main_red: #ff6633;
+    --sec_red: #ff571f;
+    --main_yellow: #ffcd46;
+    --sec_yellow: #ffc733;
+    --main_blue: #3f5efb;
+    --sec_blue: #005A9C;
+    --main_purple: #332D71;
+    --sec_purple: #3D287A;
+}
 
+.text-blue {
+    color: var(--main_blue);
+}
 
-ul {list-style-type: none;}
-body {font-family: JetBrains Mono, sans-serif;}
+.btn-blue {
+    transition: 0.15s ease-in-out;
+    background-color: var(--main_blue);
+    color: #fff;
+    border-color: var(--main_blue);
+}
+
+.btn-blue:hover {
+    color: #fff;
+    background-color: var(--sec_blue);
+    border-color: var(--sec_blue);
+}
+
+.bg-blue {
+    background-color: var(--main_blue) !important;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.text-green {
+    color: var(--main_green);
+}
+
+.btn-green {
+    transition: 0.15s ease-in-out;
+    background-color: var(--main_green);
+    color: #fff;
+    border-color: var(--main_green);
+}
+
+.btn-green:hover {
+    color: #fff;
+    background-color: var(--sec_green);
+    border-color: var(--sec_green);
+}
+
+.bg-green {
+    background-color: var(--main_green) !important;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.text-grey {
+    color: var(--main_grey);
+}
+
+.btn-grey {
+    transition: 0.15s ease-in-out;
+    background-color: var(--main_grey);
+    color: #fff;
+    border-color: var(--main_grey);
+}
+
+.btn-grey:hover {
+    color: #fff;
+    background-color: var(--sec_grey);
+    border-color: var(--sec_grey);
+}
+
+.bg-grey {
+    background-color: var(--main_grey) !important;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.text-red {
+    color: var(--main_red);
+}
+
+.btn-red {
+    transition: 0.15s ease-in-out;
+    background-color: var(--main_red);
+    color: #fff;
+    border-color: var(--main_red);
+}
+
+.btn-red:hover {
+    color: #fff;
+    background-color: var(--sec_red);
+    border-color: var(--sec_red);
+}
+
+.bg-red {
+    background-color: var(--main_red) !important;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.text-purple {
+    color: var(--main_purple);
+}
+
+.btn-purple {
+    transition: 0.15s ease-in-out;
+    background-color: var(--main_purple);
+    color: #fff;
+    border-color: var(--main_purple);
+}
+
+.btn-purple:hover {
+    color: #fff;
+    background-color: var(--sec_purple);
+    border-color: var(--sec_purple);
+}
+
+.bg-purple {
+    background-color: var(--main_purple) !important;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.text-yellow {
+    color: var(--main_yellow);
+}
+
+.btn-yellow {
+    transition: 0.15s ease-in-out;
+    background-color: var(--main_yellow);
+    color: #fff;
+    border-color: var(--main_yellow);
+}
+
+.btn-yellow:hover {
+    color: #fff;
+    background-color: var(--sec_yellow);
+    border-color: var(--sec_yellow);
+}
+
+.bg-yellow {
+    background-color: var(--main_yellow) !important;
+    color: #fff;
+    border-radius: 3px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+body {
+    font-family: JetBrains Mono, sans-serif;
+}
 
 /* Month header */
 .month {
@@ -29,10 +185,12 @@ body {font-family: JetBrains Mono, sans-serif;}
     float: left;
     padding-top: 10px;
 }
+
 .month .prev a {
-     text-decoration: none;
+    text-decoration: none;
     color: white;
- }
+}
+
 .month .next a {
     text-decoration: none;
     color: white;
@@ -48,7 +206,7 @@ body {font-family: JetBrains Mono, sans-serif;}
 .weekdays {
     margin: 0;
     padding: 10px 0;
-    background-color:#ddd;
+    background-color: #ddd;
 }
 
 .weekdays li {
@@ -71,7 +229,7 @@ body {font-family: JetBrains Mono, sans-serif;}
     width: 13.6%;
     text-align: center;
     margin-bottom: 5px;
-    font-size:12px;
+    font-size: 12px;
     color: #777;
 }
 
@@ -81,8 +239,9 @@ body {font-family: JetBrains Mono, sans-serif;}
     background: #1abc9c;
     color: white !important
 }
-.arrows{
-font-size: 30px;
+
+.arrows {
+    font-size: 30px;
     position: absolute;
     top: 17.5rem;
     text-decoration: none;
@@ -90,24 +249,28 @@ font-size: 30px;
 
 
 }
+
 .arrows a {
-     text-decoration: none;
-     color: black;
+    text-decoration: none;
+    color: black;
 
 
- }
-.card-shadow{
+}
+
+.card-css-shadow {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-.left-divider{
-    border-left: solid 2px 	#d9e2ef;
+
+.left-divider {
+    border-left: solid 2px #d9e2ef;
 }
 
 
-.cursor-blocked{
+.cursor-blocked {
     cursor: not-allowed;
 }
-.cursor-click{
+
+.cursor-click {
     cursor: pointer;
 }
 
@@ -116,11 +279,11 @@ font-size: 30px;
     position: relative;
     margin: 1em;
     padding: 0.67em;
-    border: 2px solid  #0275d8 ;
+    border: 2px solid #0275d8;
     overflow: hidden;
     text-decoration: none;
     outline: none;
-    color: #0275d8 ;
+    color: #0275d8;
     background: transparent;
     font-family: 'raleway', sans-serif;
 }
@@ -139,21 +302,21 @@ font-size: 30px;
     width: 100%;
     text-align: center;
     opacity: 0;
-    transition: .4s,opacity .6s;
+    transition: .4s, opacity .6s;
 }
 
 /* :before */
 
 .button:before {
     content: attr(data-hover);
-    transform: translate(-150%,0);
+    transform: translate(-150%, 0);
 }
 
 /* :after */
 
 .button:after {
     content: attr(data-active);
-    transform: translate(150%,0);
+    transform: translate(150%, 0);
 }
 
 /* Span on :hover and :active */
@@ -172,7 +335,7 @@ font-size: 30px;
 .button:hover:before,
 .button:active:after {
     opacity: 1;
-    transform: translate(0,0);
+    transform: translate(0, 0);
     transition-delay: .4s;
 }
 
@@ -181,8 +344,374 @@ font-size: 30px;
 */
 
 .button:active:before {
-    transform: translate(-150%,0);
+    transform: translate(-150%, 0);
     transition-delay: 0s;
+}
+.full{
+    height: calc(100vh - 10rem);
+}
+.bg-login {
+    background: rgb(63, 94, 251);
+    background: radial-gradient(circle, rgba(63, 94, 251, 1) 27%, rgba(0, 90, 156, 1) 80%);
+}
+
+.login-box {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(332deg, rgba(2, 0, 36, 1) 9%, rgba(9, 121, 60, 1) 85%);
+}
+
+.input-flow {
+    width: 75%;
+    border: none;
+    border-bottom: var(--sec_grey) 2px solid;
+}
+
+/*button moving border*/
+/* From uiverse.io */
+.fancy {
+    background-color: transparent;
+    border: 2px solid #000;
+    border-radius: 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 1.25em 2em;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    transition: all 0.3s ease-in-out;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+    font-size: 13px;
+}
+
+.fancy::before {
+    content: " ";
+    width: 1.5625rem;
+    height: 2px;
+    background: black;
+    top: 50%;
+    left: 1.5em;
+    position: absolute;
+    transform: translateY(-50%);
+    transform-origin: center;
+    transition: background 0.3s linear, width 0.3s linear;
+}
+
+.fancy .text {
+    font-size: 1.125em;
+    line-height: 1.33333em;
+    padding-left: 2em;
+    display: block;
+    text-align: left;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: black;
+}
+
+.fancy .top-key {
+    height: 2px;
+    width: 1.5625rem;
+    top: -2px;
+    left: 0.625rem;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, left 0.3s ease-out;
+}
+
+.fancy .bottom-key-1 {
+    height: 2px;
+    width: 1.5625rem;
+    right: 1.875rem;
+    bottom: -2px;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+}
+
+.fancy .bottom-key-2 {
+    height: 2px;
+    width: 0.625rem;
+    right: 0.625rem;
+    bottom: -2px;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+}
+
+.fancy:hover {
+    color: white;
+    background: black;
+}
+
+.fancy:hover::before {
+    width: 0.9375rem;
+    background: white;
+}
+
+.fancy:hover .text {
+    color: white;
+    padding-left: 1.5em;
+}
+
+.fancy:hover .top-key {
+    left: -2px;
+    width: 0px;
+}
+
+.fancy:hover .bottom-key-1,
+.fancy:hover .bottom-key-2 {
+    right: 0;
+    width: 0;
+}
+
+/*burger menu cross*/
+input[type = "checkbox"] {
+    -webkit-appearance: none;
+    display: none;
+    visibility: hidden;
+}
+
+.bar {
+    position: relative;
+    cursor: pointer;
+    width: 50px;
+    height: 40px;
+}
+
+.bar span {
+    position: absolute;
+    width: 45px;
+    height: 7px;
+    background: #f1faee;
+    border-radius: 100px;
+    display: inline-block;
+    transition: 0.3s ease;
+    left: 0;
+}
+
+.bar span.top {
+    top: 0;
+}
+
+.bar span.middle {
+    top: 17px;
+}
+
+.bar span.bottom {
+    bottom: 0;
+}
+
+input[type]:checked ~ span.top {
+    transform: rotate(45deg);
+    transform-origin: top left;
+    width: 48px;
+    left: 5px;
+}
+
+input[type]:checked ~ span.bottom {
+    transform: rotate(-45deg);
+    transform-origin: top left;
+    width: 48px;
+    bottom: -1px;
+    box-shadow: 0 0 10px #495057;
+}
+
+input[type]:checked ~ span.middle {
+    transform: translateX(-20px);
+    opacity: 0;
+}
+
+/*Navigation slider out*/
+.sidebar-panel {
+    overflow-y: auto;
+    background-color: #130f40;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 999;
+    padding: 3rem 20px 2rem 20px;
+    width: 300px;
+}
+.slide-enter-active {
+    transition: transform 0.2s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(-100%);
+    transition: all 200ms ease-in 0s
+}
+
+.sidebar-backdrop {
+    background-color: rgba(0,0,0,.5);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+/*homepage card-css*/
+/* From uiverse.io by @gagan-gv */
+.card-css {
+    width: 190px;
+    height: 254px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.5s;
+}
+
+.card-css:hover {
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.623);
+    background-color: #4bb8ff;
+}
+
+.card-css .blob {
+    height: 10px;
+    width: 75%;
+    border-radius: 0 0 30px 30px;
+    margin: 0 auto;
+    background-color: #4bb8ff;
+    visibility: visible;
+    transition: all 0.3s;
+}
+
+.card-css:hover .blob {
+    height: 0;
+}
+
+.card-css .img {
+    display: flex;
+    margin: 30px auto 10px auto;
+    width: 70px;
+    height: 70px;
+    background-color: #4bb8ff;
+    border-radius: 50%;
+    font-size: 11px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
+}
+
+.card-css:hover .img {
+    width: 100%;
+    height: 70%;
+    border-radius: 10px 0 0;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    z-index: 99999;
+}
+
+.card-css h2 {
+    padding: 15px 10px;
+    font-size: 25px;
+    transition: all 0.1s;
+    z-index: -99;
+    line-height: 17px;
+}
+
+.card-css span {
+    font-size: 18px;
+}
+
+.card-css:hover h2 {
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    transition: all 0.5s;
+}
+
+.card-css>p {
+    opacity: 0;
+    transition: all 0.75s;
+}
+
+.card-css>p>svg {
+    padding: 5px;
+}
+
+.card-css:hover>p {
+    position: absolute;
+    bottom: 15px;
+    left: 35px;
+    opacity: 1;
+    transition: all 0.1s;
+}
+/*get started button*/
+/* From uiverse.io by @adamgiebl */
+.cssbuttons-io-button {
+    background: var(--main_blue);
+    color: white;
+    font-family: inherit;
+    padding: 0.35em;
+    padding-left: 1.2em;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 0.9em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 1.6em -0.6em var(--sec_blue);
+    overflow: hidden;
+    position: relative;
+    height: 2.8em;
+    padding-right: 3.3em;
+}
+
+.cssbuttons-io-button .icon {
+    background: white;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em  var(--sec_blue);
+    right: 0.3em;
+    transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+    width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color: var(--main_blue);
+}
+
+.cssbuttons-io-button:hover .icon svg {
+    transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+    transform: scale(0.95);
+}
+.img{
+    height: 40px;
+}
+.img-small{
+    height: 70px;
+}
+.img-small-nav{
+    height: 50px;
 }
 
 

@@ -12,14 +12,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Shared_TitleLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Shared/TitleLayout */ "./resources/js/Shared/TitleLayout.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Home',
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
+    var username = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
+      return (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.value.auth.user.username;
+    });
     var __returned__ = {
-      TitleLayout: _Shared_TitleLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
+      username: username,
+      TitleLayout: _Shared_TitleLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+      computed: vue__WEBPACK_IMPORTED_MODULE_1__.computed,
+      usePage: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -86,6 +96,38 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
+var _hoisted_3 = {
+  "class": "row justify-content-center full"
+};
+var _hoisted_4 = {
+  "class": "col-10 d-flex mx-auto my-auto"
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"mx-auto\"><h1 class=\"text-purple\"> Online Booking System <br> <span class=\"text-red\">for all service based users</span></h1><p class=\"text-secondary\"> Simply define your services and providers, display their availability, and you will have clients both old and new making bookings 24/7. </p><div class=\"d-flex\"><div class=\"me-2\"><button class=\"fancy\" type=\"submit\"><span class=\"top-key\"></span><span class=\"text\">Create a Company</span><span class=\"bottom-key-1\"></span><span class=\"bottom-key-2\"></span></button></div><div class=\"me-2\"><button class=\"fancy\" type=\"submit\"><span class=\"top-key\"></span><span class=\"text\">Invite a User</span><span class=\"bottom-key-1\"></span><span class=\"bottom-key-2\"></span></button></div></div><div class=\"d-flex justify-content-end my-4\"><button class=\"cssbuttons-io-button\"> Get started <div class=\"icon\"><svg height=\"24\" width=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0h24v24H0z\" fill=\"none\"></path><path d=\"M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z\" fill=\"currentColor\"></path></svg></div></button></div></div>", 1);
+
+var _hoisted_6 = {
+  "class": "mx-auto"
+};
+var _hoisted_7 = {
+  "class": "card-css"
+};
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "blob"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "img"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, null, -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -96,9 +138,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["TitleLayout"], {
-    title: "Home"
-  })], 64
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    if you have a company or are assigned one show company stats "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.username), 1
+  /* TEXT */
+  ), _hoisted_10])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    if you dont have a company show search for companies to book with or searhc for services with data or ask if they want ot create a company  ")], 64
   /* STABLE_FRAGMENT */
   );
 }

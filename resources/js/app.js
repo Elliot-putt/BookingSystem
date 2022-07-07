@@ -23,7 +23,7 @@ createInertiaApp({
             .component("Head", Head)
             .mount(el)
     },
-    title: title => title + " - BookingSystem"
+    title: title => title + " - SimplyCentral"
 });
 InertiaProgress.init({
     color: '#332d71',
