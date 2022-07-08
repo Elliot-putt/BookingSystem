@@ -38,6 +38,31 @@ class CompanyController extends Controller {
         ]);
     }
 
+    public function all()
+    {
+        return Inertia::render('Companies/View', [
+            'companies' => \App\Models\Company::query()
+                ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn($company) => [
+                    'id' => $company->id,
+                    'name' => $company->name,
+                    'address_1' => $company->address_1,
+                    'address_2' => $company->address_2,
+                    'city' => $company->city,
+                    'county' => $company->county,
+                    'postcode' => $company->postcode,
+                    'telephone' => $company->telephone,
+                    'email' => $company->email,
+                    'url' => $company->url,
+                ]),
+            'filters' => \Illuminate\Support\Facades\Request::only(['search']),
+        ]);
+    }
+
     public function create()
     {
         $startTime = '01:00';
@@ -102,6 +127,5 @@ class CompanyController extends Controller {
         dd($company);
 
     }
-
 
 }

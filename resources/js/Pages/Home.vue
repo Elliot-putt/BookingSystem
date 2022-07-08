@@ -25,7 +25,6 @@
                             </button>
                         </div>
                         <div class="me-2">
-
                             <button class="fancy" type="submit">
                                 <span class="top-key"></span>
                                 <span class="text">Invite a User</span>

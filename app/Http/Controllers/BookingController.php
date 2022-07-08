@@ -17,26 +17,32 @@ class BookingController extends Controller {
 
     public function all()
     {
-
-        $collection = Booking::query()->whereUserId(auth()->user()->id)->paginate(10)
-            ->withQueryString()->map(fn($booking) => [
-                'month' => Carbon::parse($booking->date_booked)->format('F'),
-                'day' => Carbon::parse($booking->date_booked)->format('d'),
-                'time' => Carbon::parse($booking->date_booked)->format('H:i'),
-                'company_id' => $booking->company_id,
-                'company_name' => $booking->company->name,
-                'company' => $booking->company,
-                'service_id' => $booking->service_id,
-                'user_id' => $booking->user_id,
-                'status' => $booking->status,
-                'ref' => $booking->ref,
-                'serviceName' => $booking->service->title,
-
-            ]);
-
+        //filter by coming first
+        //paginate
+        //add search
         return Inertia::render('Bookings/View', [
-            'bookings' => $collection,
+            'booking' => \App\Models\Booking::query()
+                ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
+                    $query->where('ref', 'like', "%{$search}%");
+                })->orderBy('date_booked' , 'ASC')
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn($booking) => [
+                    'month' => Carbon::parse($booking->date_booked)->format('F'),
+                    'day' => Carbon::parse($booking->date_booked)->format('d'),
+                    'time' => Carbon::parse($booking->date_booked)->format('H:i'),
+                    'company_id' => $booking->company_id,
+                    'company_name' => $booking->company->name,
+                    'company' => $booking->company,
+                    'service_id' => $booking->service_id,
+                    'user_id' => $booking->user_id,
+                    'status' => $booking->status,
+                    'ref' => $booking->ref,
+                    'serviceName' => $booking->service->title,
+                ]),
+            'filters' => \Illuminate\Support\Facades\Request::only(['search']),
         ]);
+
     }
 
     //returns current or selected dates to the user

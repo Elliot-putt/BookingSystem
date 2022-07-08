@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-4" >
         <Component :is="link.url ? 'Link' : 'span'" v-for="link in links"
                    class="mx-2 text-decoration-none"
                    :class="{'text-secondary' : ! link.url , 'btn btn-primary' : link.active}"

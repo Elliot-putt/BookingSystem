@@ -107,7 +107,7 @@
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Auth_Login_vue":1,"resources_js_Pages_Bookings_Create_vue":1,"resources_js_Pages_Bookings_View_vue":1,"resources_js_Pages_Companies_Create_vue":1,"resources_js_Pages_Companies_Edit_vue":1,"resources_js_Pages_Companies_Show_vue":1,"resources_js_Pages_Companies_View_vue":1,"resources_js_Pages_Home_vue":1,"resources_js_Pages_Services_Create_vue":1,"resources_js_Pages_Services_View_vue":1,"resources_js_Pages_Users_Create_vue":1,"resources_js_Pages_Users_View_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Auth_Login_vue":1,"resources_js_Pages_Bookings_Create_vue":1,"resources_js_Pages_Bookings_View_vue":1,"resources_js_Pages_Companies_Create_vue":1,"resources_js_Pages_Companies_Edit_vue":1,"resources_js_Pages_Companies_Show_vue":1,"resources_js_Pages_Companies_View_vue":1,"resources_js_Pages_Home_vue":1,"resources_js_Pages_Services_All_vue":1,"resources_js_Pages_Services_Create_vue":1,"resources_js_Pages_Services_View_vue":1,"resources_js_Pages_Users_Create_vue":1,"resources_js_Pages_Users_View_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

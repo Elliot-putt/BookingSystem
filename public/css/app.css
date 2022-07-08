@@ -490,6 +490,7 @@ input[type = "checkbox"] {
     cursor: pointer;
     width: 50px;
     height: 40px;
+    z-index: 2;
 }
 
 .bar span {
@@ -712,8 +713,24 @@ input[type]:checked ~ span.middle {
 .img-small-nav{
     height: 50px;
 }
+.img-text-size{
+    height: 20px;
+}
 
 /*card */
+.rounded-hard-blue{
+    border-radius: 20px;
+    border-left: var(--sec_blue) solid 20px;
+    transition: 0.2s ease-out;
+}
+.rounded-hard-blue:hover{
+    border-left: var(--sec_blue) solid 50px;
+}
+.card-md{
+    height: 12rem;
+    width: 60rem;
+}
+
 .card-box {
     width: 300px;
     height:400px;
@@ -780,7 +797,7 @@ input[type]:checked ~ span.middle {
     position: absolute;
     bottom: 20px;
     left: 48%;
-    z-index: 2;
+
     display: inline-block;
     transform: translate(0, -50%);
     color: var(--main_grey);

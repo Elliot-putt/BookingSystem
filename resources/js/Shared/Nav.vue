@@ -15,8 +15,11 @@
     </nav>
     <Sidebar :is-panel-open="isPanelOpen" :img="image">
         <NavLink class="mx-2" href="/" :active="$page.component === 'Home'">Home</NavLink>
-        <NavLink class="mx-2" href="/bookings" :active="$page.component === 'Bookings/View'">Bookings</NavLink>
-        <NavLink class="mx-2" href="/company" :active="$page.component === 'Companies/View'">Companies</NavLink>
+        <NavLink class="mx-2" href="/bookings" :active="$page.component === 'Bookings/View'">My Bookings</NavLink>
+        <NavLink class="mx-2" href="/company" :active="$page.component === 'Companies/View'">My Company</NavLink>
+        <NavLink class="mx-2" href="/companies" :active="$page.component === 'Companies/View'">All Companies</NavLink>
+        <NavLink class="mx-2" href="/companies" :active="$page.component === 'Companies/View'">Join a Company</NavLink>
+        <NavLink class="mx-2" href="/serv" :active="$page.component === 'Services/View'">Services</NavLink>
         <NavLink class="mx-2" href="/users" :active="$page.component === 'Users/View'">Users</NavLink>
         <NavLink class="mx-2 border-top mt-2"  method="post" as="button"  href="/logout" >Logout</NavLink>
     </Sidebar>

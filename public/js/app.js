@@ -345,13 +345,19 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Home");
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Bookings");
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("My Bookings");
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Companies");
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("My Company");
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Users");
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("All Companies");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Logout");
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Join a Company");
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Services");
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Users");
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Logout");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
@@ -432,11 +438,50 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["active"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["NavLink"], {
         "class": "mx-2",
+        href: "/companies",
+        active: _ctx.$page.component === 'Companies/View'
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_14];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["active"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["NavLink"], {
+        "class": "mx-2",
+        href: "/companies",
+        active: _ctx.$page.component === 'Companies/View'
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_15];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["active"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["NavLink"], {
+        "class": "mx-2",
+        href: "/serv",
+        active: _ctx.$page.component === 'Services/View'
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_16];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["active"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["NavLink"], {
+        "class": "mx-2",
         href: "/users",
         active: _ctx.$page.component === 'Users/View'
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_14];
+          return [_hoisted_17];
         }),
         _: 1
         /* STABLE */
@@ -450,7 +495,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         href: "/logout"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_15];
+          return [_hoisted_18];
         }),
         _: 1
         /* STABLE */
@@ -986,10 +1031,12 @@ var map = {
 	],
 	"./Bookings/View": [
 		"./resources/js/Pages/Bookings/View.vue",
+		"/js/vendor",
 		"resources_js_Pages_Bookings_View_vue"
 	],
 	"./Bookings/View.vue": [
 		"./resources/js/Pages/Bookings/View.vue",
+		"/js/vendor",
 		"resources_js_Pages_Bookings_View_vue"
 	],
 	"./Companies/Create": [
@@ -1033,6 +1080,14 @@ var map = {
 	"./Home.vue": [
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
+	],
+	"./Services/All": [
+		"./resources/js/Pages/Services/All.vue",
+		"resources_js_Pages_Services_All_vue"
+	],
+	"./Services/All.vue": [
+		"./resources/js/Pages/Services/All.vue",
+		"resources_js_Pages_Services_All_vue"
 	],
 	"./Services/Create": [
 		"./resources/js/Pages/Services/Create.vue",

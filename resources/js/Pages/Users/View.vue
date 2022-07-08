@@ -34,7 +34,7 @@
                 </tr>
                 </tbody>
             </table>
-            <Pagination class="mt-4" :links="users.links"/>
+            <Pagination :links="users.links"/>
         </div>
     </div>
 </template>

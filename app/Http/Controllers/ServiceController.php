@@ -13,23 +13,29 @@ class ServiceController extends Controller {
     public function index(Company $company)
     {
         return Inertia::render('Services/View', [
-        'services' => $company->services
-        ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
-            $query->where('title', 'like', "%{$search}%");
-        })
-        ->map(fn($service) => [
-            'id' => $service->id,
-            'title' => $service->title,
-            'company_id' => $service->comapny_id,
-            'company_name' => $service->company->name,
-            'description' => $service->description,
-            'price' => $service->price,
-            'duration' => intdiv($service->duration, 60).':'. ($service->duration % 60) . ' Hours',
-        ]),
+            'services' => $company->services
+                ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
+                    $query->where('title', 'like', "%{$search}%");
+                })
+                ->map(fn($service) => [
+                    'id' => $service->id,
+                    'title' => $service->title,
+                    'company_id' => $service->comapny_id,
+                    'company_name' => $service->company->name,
+                    'description' => $service->description,
+                    'price' => $service->price,
+                    'duration' => intdiv($service->duration, 60) . ':' . ($service->duration % 60) . ' Hours',
+                ]),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
             'company' => $company,
         ]);
 
+    }
+
+    public function searchServices()
+    {
+        //return a page to look for all services search bar
+        return Inertia::render('Services/All');
     }
 
     public function create(Company $company)
