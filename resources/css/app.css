@@ -1,3 +1,7 @@
+html{
+    scroll-behavior: smooth;
+}
+
 :root {
     --main_green: #0cce6b;
     --sec_green: #20732c;
@@ -383,7 +387,7 @@ body {
     transition-delay: 0s;
 }
 .full{
-    height: calc(100vh - 10rem);
+    height: calc(100vh - 5em);
 }
 .bg-login {
     background: rgb(63, 94, 251);
@@ -597,7 +601,6 @@ input[type]:checked ~ span.middle {
     z-index: 1;
 }
 /*homepage card-css*/
-/* From uiverse.io by @gagan-gv */
 .card-css {
     width: 190px;
     height: 254px;
@@ -609,7 +612,7 @@ input[type]:checked ~ span.middle {
 
 .card-css:hover {
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.623);
-    background-color: #4bb8ff;
+    background-color: var(--sec_blue);
 }
 
 .card-css .blob {
@@ -617,7 +620,7 @@ input[type]:checked ~ span.middle {
     width: 75%;
     border-radius: 0 0 30px 30px;
     margin: 0 auto;
-    background-color: #4bb8ff;
+    background-color: var(--sec_blue);
     visibility: visible;
     transition: all 0.3s;
 }
@@ -631,7 +634,7 @@ input[type]:checked ~ span.middle {
     margin: 30px auto 10px auto;
     width: 70px;
     height: 70px;
-    background-color: #4bb8ff;
+    background-color: var(--main_red);
     border-radius: 50%;
     font-size: 11px;
     justify-content: center;
@@ -644,7 +647,7 @@ input[type]:checked ~ span.middle {
     height: 70%;
     border-radius: 10px 0 0;
     margin: 0 auto;
-    background-color: #f0f0f0;
+    background-color: var(--main_red);
     z-index: 99999;
 }
 
@@ -662,29 +665,22 @@ input[type]:checked ~ span.middle {
 
 .card-css:hover h2 {
     opacity: 0;
-    width: 100%;
     position: absolute;
     transition: all 0.5s;
 }
 
 .card-css>p {
-    opacity: 0;
     transition: all 0.75s;
 }
 
-.card-css>p>svg {
-    padding: 5px;
-}
 
 .card-css:hover>p {
-    position: absolute;
-    bottom: 15px;
-    left: 35px;
-    opacity: 1;
+  display: none;
+    opacity: 0;
     transition: all 0.1s;
 }
+
 /*get started button*/
-/* From uiverse.io by @adamgiebl */
 .cssbuttons-io-button {
     background: var(--main_blue);
     color: white;
@@ -740,6 +736,9 @@ input[type]:checked ~ span.middle {
 .img{
     height: 40px;
 }
+.img-card{
+    height: 30px;
+}
 .img-small{
     height: 70px;
 }
@@ -747,4 +746,138 @@ input[type]:checked ~ span.middle {
     height: 50px;
 }
 
+/*card */
+.card-box {
+    width: 300px;
+    height:400px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    position: relative;
+    padding: 1.8rem;
+    border: 2px solid #c3c6ce;
+    transition: 0.5s ease-out;
+    overflow: visible;
+}
 
+.card-details {
+    color: black;
+    height: 100%;
+    display: grid;
+    place-content: center;
+}
+.body-bottom{
+    height: 100%;
+    display: grid;
+    place-content: space-around;
+}
+
+.card-button {
+    transform: translate(-50%, 125%);
+    width: 60%;
+    border-radius: 1rem;
+    border: none;
+    background-color: var(--main_blue);
+    color: #fff;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    opacity: 0;
+    transition: 0.3s ease-out;
+}
+
+.text-body {
+    color: rgb(134, 134, 134);
+}
+
+/*Text*/
+.text-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/*Hover*/
+.card-box:hover {
+    border-color: #008bf8;
+    box-shadow: 0 4px 18px 0 var(--sec_blue);
+}
+
+.card-box:hover .card-button {
+    transform: translate(-50%, 50%);
+    opacity: 1;
+}
+/*scroll button*/
+
+.demo a {
+    position: absolute;
+    bottom: 20px;
+    left: 48%;
+    z-index: 2;
+    display: inline-block;
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    color: var(--main_grey);
+    font : normal 400 20px/1 'Josefin Sans', sans-serif;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: opacity .3s;
+}
+.demo a:hover {
+    opacity: .5;
+}
+#section07 a {
+    padding-top: 80px;
+}
+#section07 a span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    border-left: 1px solid var(--main_grey);
+    border-bottom: 1px solid var(--main_grey);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-animation: sdb07 2s infinite;
+    animation: sdb07 2s infinite;
+    opacity: 0;
+    box-sizing: border-box;
+}
+#section07 a span:nth-of-type(1) {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+#section07 a span:nth-of-type(2) {
+    top: 16px;
+    -webkit-animation-delay: .15s;
+    animation-delay: .15s;
+}
+#section07 a span:nth-of-type(3) {
+    top: 32px;
+    -webkit-animation-delay: .3s;
+    animation-delay: .3s;
+}
+@-webkit-keyframes sdb07 {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes sdb07 {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

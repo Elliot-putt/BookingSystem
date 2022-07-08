@@ -54,6 +54,14 @@ class HandleInertiaRequests extends Middleware
                         }else{
                             return  '';
                         }
+                    },
+                    'id' => function() {
+                        if(auth()->user() != null)
+                        {
+                            return auth()->user()->id ?? '';
+                        }else{
+                            return  '';
+                        }
                     }
                 ]
             ]
