@@ -11,14 +11,21 @@ class Service extends Model {
 
     protected $guarded = [];
 
-    public function excerpt(){
+    public function excerpt()
+    {
         return str($this->description)->ltrim(20) . ' ...';
     }
-    public function company(){
+
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
-    public function bookings(){
+
+    public function bookings()
+    {
         return $this->hasMany(Booking::class);
     }
+
+
 
 }

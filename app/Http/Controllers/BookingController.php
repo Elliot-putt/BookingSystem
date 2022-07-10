@@ -24,7 +24,7 @@ class BookingController extends Controller {
             'booking' => \App\Models\Booking::query()
                 ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
                     $query->where('ref', 'like', "%{$search}%");
-                })->orderBy('date_booked' , 'ASC')
+                })->orderBy('date_booked', 'ASC')
                 ->paginate(10)
                 ->withQueryString()
                 ->through(fn($booking) => [
@@ -101,6 +101,14 @@ class BookingController extends Controller {
         $queryDate = Carbon::parse($month . '/' . $dayDigit . '/' . $year);
 
         $day = strtolower(Carbon::parse($month . '/' . $day . '/' . $year)->format('l'));
+
+        //all company bookings for that day
+        $bookings = $company->bookings()->get()->map(fn($booking) => [
+            'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+            'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+            'service_duration' => $booking->service->duration,
+        ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+
         $filtered = [];
         $hours = $company->hours->toArray();
         $key_1 = $day . '_start';
@@ -122,21 +130,36 @@ class BookingController extends Controller {
                 $timesSoFar = Hour::timeToArray($hourTillPresent, $service->duration, $dayHours[$key_1], $dayHours[$key_2]);
                 $times = array_diff_key($times, $timesSoFar);
             }
-            //Check if there are any times returned ? if so this function removes all the currently booked slots and times
+            //Check if there are any times returned if so this function removes all the currently booked slots and times
             if($times)
             {
-                //map over the collection and change the dates to 2022-12-29, so we can string match them for the same day
-                $queryBookings = $service->bookings->map(fn($booking) => [
-                    'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
-                    'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
-                ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
-                //foreach all the bookings for the queried date and unset them, so they can tbe selected
-                foreach($queryBookings as $booking)
+
+                foreach($bookings as $booked)
                 {
-                    // get time 09:00 unset this against all the times for the day $times
-                    $arrayKey = array_search($booking['time_booked'], $times);
-                    unset($times[$arrayKey]);
+                    foreach($times as $time)
+                    {
+                        //no 10:30 time slot hmmm
+                        $bookingTime = Carbon::createFromTimeString($booked['time_booked'])->subMinute();
+                        $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute()->format('H:i');
+                        if(Carbon::createFromTimeString($time)->isBetween($bookingTime, $afterDuration))
+                        {
+                            $arrayKey = array_search($time, $times);
+                            unset($times[$arrayKey]);
+                        }
+                    }
                 }
+                //map over the collection and change the dates to 2022-12-29, so we can string match them for the same day
+//                $queryBookings = $service->bookings->map(fn($booking) => [
+//                    'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+//                    'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+//                ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+//                //foreach all the bookings for the queried date and unset them, so they can tbe selected
+//                foreach($queryBookings as $booking)
+//                {
+//                    // get time 09:00 unset this against all the times for the day $times
+//                    $arrayKey = array_search($booking['time_booked'], $times);
+//                    unset($times[$arrayKey]);
+//                }
             }
         }
         $startDays = Carbon::parse($month . '/' . '01/' . $year)->startOfMonth()->format('w');

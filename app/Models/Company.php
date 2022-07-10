@@ -20,5 +20,9 @@ class Company extends Model {
     {
         return $this->hasMany(Service::class , 'company_id');
     }
+    public function bookings()
+    {
+        return Booking::where('company_id', '=', $this->id);
+    }
 
 }

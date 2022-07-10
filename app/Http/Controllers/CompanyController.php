@@ -66,8 +66,9 @@ class CompanyController extends Controller {
     public function create()
     {
         $startTime = '01:00';
-        $hours = Hour::hoursBetween($startTime, '24:00');
-        $times = Hour::timeToArray($hours, 0, $startTime);
+        $endTime = '24:00';
+        $hours = Hour::hoursBetween($startTime,$endTime);
+        $times = Hour::timeToArray($hours, 60, $startTime , $endTime);
 
         return Inertia::render('Companies/Create', [
             'hours' => $times,
