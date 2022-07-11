@@ -14,7 +14,7 @@ class CompanyController extends Controller {
 
     public function index()
     {
-
+//        dd(auth()->user()->companies());
         return Inertia::render('Companies/View', [
             'companies' => \App\Models\Company::query()
                 ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
@@ -40,6 +40,7 @@ class CompanyController extends Controller {
 
     public function all()
     {
+
         return Inertia::render('Companies/View', [
             'companies' => \App\Models\Company::query()
                 ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
@@ -66,8 +67,9 @@ class CompanyController extends Controller {
     public function create()
     {
         $startTime = '01:00';
+        $endTime = '24:00';
         $hours = Hour::hoursBetween($startTime, '24:00');
-        $times = Hour::timeToArray($hours, 0, $startTime);
+        $times = Hour::timeToArray($hours, 60, $startTime , $endTime);
 
         return Inertia::render('Companies/Create', [
             'hours' => $times,

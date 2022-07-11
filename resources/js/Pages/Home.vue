@@ -16,13 +16,12 @@
                         old and new making bookings 24/7. </p>
                     <div class="d-flex">
                         <div class="me-2">
-
-                            <button class="fancy" type="submit">
+                            <Link as="button" href="/company/create" class="fancy" type="submit">
                                 <span class="top-key"></span>
                                 <span class="text">Create a Company</span>
                                 <span class="bottom-key-1"></span>
                                 <span class="bottom-key-2"></span>
-                            </button>
+                            </Link>
                         </div>
                         <div class="me-2">
                             <button class="fancy" type="submit">
