@@ -63,7 +63,7 @@ class ServiceController extends Controller {
             'duration' => $request->duration,
         ]);
 
-        return to_route('companies.services', $company->id);
+        return redirect(`/company/${$company->id}/service`);
     }
 
 }
