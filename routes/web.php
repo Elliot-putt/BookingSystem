@@ -51,7 +51,6 @@ Route::middleware('auth')->group(function() {
         Route::get('/company/{company}/service/create', 'create')->name('services.create');
         Route::post('/company/{company}/service/store', 'store')->name('services.store');
         Route::get('/company/{company}/service', 'index')->name('companies.services');
-        Route::get('/services/', 'index')->name('companies.services');
     });
 
 

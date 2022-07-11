@@ -18,11 +18,19 @@ class Company extends Model {
 
     public function services()
     {
-        return $this->hasMany(Service::class , 'company_id');
+        return $this->hasMany(Service::class, 'company_id');
     }
+
     public function bookings()
     {
         return Booking::where('company_id', '=', $this->id);
+    }
+
+    public function scopeUserCompanyFilter($query)
+    {
+        $company_ids = auth()->user()->companiesArray();
+
+        return $query->whereIn('id', $company_ids);
     }
 
 }

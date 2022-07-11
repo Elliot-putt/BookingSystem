@@ -37,15 +37,27 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="duration" class="form-label fw-bold">Duration(Minutes)<span
-                                    class="text-danger">*</span></label>
+                                <div v-if="!duration" class="d-flex my-auto">
+                                    <label for="duration" class="form-label fw-bold">Duration(Minutes)<span
+                                        class="text-danger">*</span></label>
+                                    <label for="allDay" class="my-auto ms-3 fs-6">Is this all day?</label>
+                                    <input v-model="duration" type="checkbox" name="allDay" class="mx-2" id="allDay"
+                                           @change="duration.value = false">
+                                </div>
+                                <div v-if="duration" class="d-flex my-auto">
+                                    <label for="duration" class="form-label fw-bold">Duration(All-Day)<span
+                                        class="text-danger">*</span></label>
+                                </div>
                                 <div v-if="form.errors.duration" v-text="' - ' + form.errors.duration"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
                             <div class="input-group mb-3">
                                 <input type="text" name="title" class="form-control"
-                                       :class="form.errors.duration ? 'border-danger' : '' " id="duration"
+                                       :disabled="duration" :class="form.errors.duration ? 'border-danger' : '' "
+                                       id="duration"
                                        placeholder="Please enter a duration" v-model="form.duration">
+                                <input v-model="duration" v-if="duration" class="mx-2" type="checkbox"
+                                       @change="duration.value = true" name="allDay">
                             </div>
                         </div>
                         <div class="col-5">
@@ -101,6 +113,7 @@ defineProps({
     company: Object,
 });
 let price = ref(false);
+let duration = ref(false);
 let page = usePage().props.value;
 let form = useForm({
     file: '',
@@ -108,6 +121,7 @@ let form = useForm({
     price: '',
     duration: '',
     description: '',
+    allDay: duration,
 
 });
 let submit = () => {

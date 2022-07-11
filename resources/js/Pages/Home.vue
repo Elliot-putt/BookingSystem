@@ -58,8 +58,8 @@
                     </Link>
                 </div>
             </div>
-            <div class="text-center scroll">
-                <section id="section07" class="demo">
+            <div class="text-center scroll" v-show="scrolled" @click="scrolled.value = !scrolled ">
+                <section id="section07" class="demo" >
                     <a href="#card"><span></span><span></span><span></span>Scroll</a>
                 </section>
             </div>
@@ -73,8 +73,10 @@
                                 <i class="fa-solid fa-magnifying-glass text-center fs-2 text-grey"></i>
                                 <p class="fs-3 text-blue">Find a service</p>
                             </div>
-                            <div >
-                                <p class="text-muted">Finding a service is easy. Search for an event you would like to book , select a date and time that suits the user and click confirm! click on the Click below to find out more.</p>
+                            <div>
+                                <p class="text-muted">Finding a service is easy. Search for an event you would like to
+                                    book , select a date and time that suits the user and click confirm! click on the
+                                    Click below to find out more.</p>
 
                             </div>
                         </div>
@@ -88,8 +90,10 @@
                                 <i class="fa-solid fa-building text-center fs-2 text-grey"></i>
                                 <p class="fs-3 text-blue">Create a Booking</p>
                             </div>
-                            <div >
-                                <p class="text-muted">Creating a booking couldn't be easier. Either search for your company if they are registered click ahead , else search for a service in your area.Click below to find out more.</p>
+                            <div>
+                                <p class="text-muted">Creating a booking couldn't be easier. Either search for your
+                                    company if they are registered click ahead , else search for a service in your
+                                    area.Click below to find out more.</p>
 
                             </div>
                         </div>
@@ -103,8 +107,10 @@
                                 <i class="fa-solid fa-building text-center fs-2 text-grey"></i>
                                 <p class="fs-3 text-blue">Create a Company</p>
                             </div>
-                            <div >
-                                <p class="text-muted">Companies allow you to create services and manage you bookings. Create a company and allow users to find your service.Click below to find out more.</p>
+                            <div>
+                                <p class="text-muted">Companies allow you to create services and manage you bookings.
+                                    Create a company and allow users to find your service.Click below to find out
+                                    more.</p>
 
                             </div>
                         </div>
@@ -120,15 +126,13 @@
 </template>
 <script setup>
 import imageSmall from "../../../public/images/simplycentrawhitel.png"
-import calendar from "../../../public/images/Bookedlogo.png"
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
 
 const username = computed(() => {
     return usePage().props.value.auth.user.username
 });
-let scrollToHere = () => {
 
-}
+let scrolled = ref(true);
 </script>
 

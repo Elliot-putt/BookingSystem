@@ -45,7 +45,14 @@ class User extends Authenticatable
     public function bookings(){
         return $this->hasMany(Booking::class , 'user_id');
     }
-//    public function companies(){
-//        return $this->belongsToMany(Company::class , 'company_user');
-//    }
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_users');
+    }
+    public function companiesArray()
+    {
+        return auth()->user()->companies()->pluck('company_id')->toArray();
+    }
+
 }

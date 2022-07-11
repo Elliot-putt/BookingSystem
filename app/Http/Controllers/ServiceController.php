@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Hour;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -53,17 +54,22 @@ class ServiceController extends Controller {
             'title' => 'required|string',
             'description' => 'required|string',
             'price' => 'int|nullable',
-            'duration' => 'required|int',
+            'duration' => 'nullable|int',
+            'allDay' => 'nullable|boolean',
         ]);
-        Service::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'company_id' => $company->id,
-            'price' => $request->price,
-            'duration' => $request->duration,
-        ]);
+        $service = new Service();
+        $service->title = $request->title;
+        $service->description = $request->description;
+        $service->company_id = $company->id;
+        $service->price = $request->price;
+        if($request->allDay != false)
+        {
+            $service->duration = $request->duration;
+        }
+        $service->save();
 
-        return redirect(`/company/${$company->id}/service`);
+        return to_route('companies.services' , $company->id);
+
     }
 
 }
