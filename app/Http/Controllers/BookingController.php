@@ -123,45 +123,57 @@ class BookingController extends Controller {
             //get all the hours within the companies addressed working hours from the database and push to an array
             $hoursInDay = Hour::hoursBetween($dayHours[$key_1], $dayHours[$key_2]);
             $times = Hour::timeToArray($hoursInDay, 15, $dayHours[$key_1], $dayHours[$key_2]);
-            //if it's the current day offset the array with how many hours the day has been through the working day
-            if($queryDate->isCurrentDay())
-            {
-                $hourTillPresent = Hour::hoursBetween($dayHours[$key_1], Carbon::now()->addHour()->format('H:i'));
-                $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[$key_1], $dayHours[$key_2]);
-                $times = array_diff_key($times, $timesSoFar);
-            }
             //Check if there are any times returned if so this function removes all the currently booked slots and times
             if($times)
             {
-
+                //foreach all the bookings for the queried date and unset them, so they can tbe selected
                 foreach($bookings as $booked)
                 {
+                    //foreach time '09:00' check if the time is between the available hours and if the booking is unset the time
                     foreach($times as $time)
                     {
-                        //no 10:30 time slot hmmm
                         $bookingTime = Carbon::createFromTimeString($booked['time_booked'])->subMinute();
-                        $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute()->format('H:i');
-                        if(Carbon::createFromTimeString($time)->isBetween($bookingTime, $afterDuration))
+                        $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute();
+                        $timeFromString = Carbon::createFromTimeString($time);
+                        if($timeFromString->isBetween($bookingTime, $afterDuration))
+                        {
+                            $arrayKey = array_search($time, $times);
+                            unset($times[$arrayKey]);
+                        }
+                        //if time + service duration is between the booked time and after-duration delete the time as it cannot overlap
+                        if($timeFromString->addMinutes($service->duration)->isBetween($bookingTime, $afterDuration))
                         {
                             $arrayKey = array_search($time, $times);
                             unset($times[$arrayKey]);
                         }
                     }
                 }
-                //map over the collection and change the dates to 2022-12-29, so we can string match them for the same day
-//                $queryBookings = $service->bookings->map(fn($booking) => [
-//                    'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
-//                    'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
-//                ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
-//                //foreach all the bookings for the queried date and unset them, so they can tbe selected
-//                foreach($queryBookings as $booking)
-//                {
-//                    // get time 09:00 unset this against all the times for the day $times
-//                    $arrayKey = array_search($booking['time_booked'], $times);
-//                    unset($times[$arrayKey]);
-//                }
             }
+            //if it's the current day offset the array with how many hours the day has been through the working day
+            if($queryDate->isCurrentDay())
+            {
+                //if the time now is before the hours start time of the business ignore it
+                if(! Carbon::parse(now()->addHour())->isBefore(now()->format('m/d/Y') . ' ' . $dayHours[$key_1]))
+                {
+                    $hourTillPresent = Hour::hoursBetween($dayHours[$key_1], Carbon::now()->addHour()->format('H:i'));
+                    $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[$key_1], $dayHours[$key_2]);
+                    $times = array_diff_key($times, $timesSoFar);
+                }
+            }
+            //checks if the duration runs over the closing time of the company if so remove it
+            foreach($times as $time)
+            {
+                $queryTime = Carbon::parse($queryDate->format('m/d/Y') . ' ' . $time);
+                $endTime = Carbon::parse($queryDate->format('m/d/Y') . ' ' . $dayHours[$key_2]);
+                if($queryTime->addMinutes($service->duration)->isAfter($endTime))
+                {
+                    $arrayKey = array_search($time, $times);
+                    unset($times[$arrayKey]);
+                }
+            }
+
         }
+        //gets the days of the week to offset it with
         $startDays = Carbon::parse($month . '/' . '01/' . $year)->startOfMonth()->format('w');
         if($startDays == 0)
         {
@@ -171,6 +183,7 @@ class BookingController extends Controller {
             $startDays--;
         }
 
+        //adds a 0  to the date format instead of 9062022 it would append a 0 like 09062022
         $days = [];
         $i = 1;
         while(floatval(Carbon::parse($month . '/' . '01' . '/' . $year)->endOfMonth()->format('j')) > $i)
