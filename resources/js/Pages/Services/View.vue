@@ -14,7 +14,7 @@
                  style="min-height: 270px">
                 <Link as="button" :href="`/booking/${company.id}/${service.id}/`" class="btn d-flex p-0 m-0" href="#">
                     <div class="col-md-4 text-start d-flex flex-column justify-content-evenly bg-primary rounded p-4">
-                        <img height="110px"
+                        <img class="img-small"
                              src="https://www.centrallearning.co.uk/wp-content/uploads/2022/06/CLPT-Logo-SQ.png">
                         <div class="mx-auto">
                             <p class="text-center m-0 text-white">Popularity</p>
@@ -24,7 +24,10 @@
                     <div class="col-md-8 text-center d-flex flex-column justify-content-evenly px-4 py-3">
                         <p class="fs-5" v-text="service.title"></p>
                         <p v-text="service.description"></p>
-                        <Link as="button" :href="`/booking/${company.id}/${service.id}/`" class="button" type="button" data-hover="Book Now" data-active="I'M ACTIVE"><span v-text="'Duration: ' + service.duration"></span>
+                        <Link as="button" :href="`/booking/${company.id}/${service.id}/`" class="button" type="button" data-hover="Book Now" data-active="I'M ACTIVE">
+                            <span v-if="service.allDay" v-text="'Duration: All Day'"></span>
+                            <span v-if="service.hasDuration" v-text="'Duration: ' + service.duration"></span>
+                            <span v-if="service.requiresDuration" v-text="'Between Working Hours'"></span>
                         </Link>
                     </div>
                 </Link>

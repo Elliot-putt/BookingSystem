@@ -103,7 +103,8 @@ class BookingController extends Controller {
         $day = strtolower(Carbon::parse($month . '/' . $day . '/' . $year)->format('l'));
 
         //all company bookings for that day
-        $bookings = $company->bookings()->get()->map(fn($booking) => [
+        //change $service to company if you want the bookings to be whole company related not service related
+        $bookings = $service->bookings()->get()->map(fn($booking) => [
             'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
             'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
             'service_duration' => $booking->service->duration,
@@ -126,6 +127,29 @@ class BookingController extends Controller {
             //Check if there are any times returned if so this function removes all the currently booked slots and times
             if($times)
             {
+                //if it's the current day offset the array with how many hours the day has been through the working day -- all types do this
+                if($queryDate->isCurrentDay())
+                {
+                    //if the time now is before the hours start time of the business ignore it
+                    if(! Carbon::parse(now()->addHour())->isBefore(now()->format('m/d/Y') . ' ' . $dayHours[$key_1]))
+                    {
+                        $hourTillPresent = Hour::hoursBetween($dayHours[$key_1], Carbon::now()->addHour()->format('H:i'));
+                        $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[$key_1], $dayHours[$key_2]);
+                        $times = array_diff_key($times, $timesSoFar);
+                    }
+                }
+                if($service->hasDuration())
+                {
+
+                }
+                if($service->allDay())
+                {
+
+                }
+                if($service->requiresDuration())
+                {
+
+                }
                 //foreach all the bookings for the queried date and unset them, so they can tbe selected
                 foreach($bookings as $booked)
                 {
@@ -149,17 +173,7 @@ class BookingController extends Controller {
                     }
                 }
             }
-            //if it's the current day offset the array with how many hours the day has been through the working day
-            if($queryDate->isCurrentDay())
-            {
-                //if the time now is before the hours start time of the business ignore it
-                if(! Carbon::parse(now()->addHour())->isBefore(now()->format('m/d/Y') . ' ' . $dayHours[$key_1]))
-                {
-                    $hourTillPresent = Hour::hoursBetween($dayHours[$key_1], Carbon::now()->addHour()->format('H:i'));
-                    $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[$key_1], $dayHours[$key_2]);
-                    $times = array_diff_key($times, $timesSoFar);
-                }
-            }
+
             //checks if the duration runs over the closing time of the company if so remove it
             foreach($times as $time)
             {

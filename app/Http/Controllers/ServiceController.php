@@ -25,7 +25,11 @@ class ServiceController extends Controller {
                     'company_name' => $service->company->name,
                     'description' => $service->description,
                     'price' => $service->price,
-                    'duration' => intdiv($service->duration, 60) . ':' . ($service->duration % 60) . ' Hours',
+                    'duration' => intdiv($service->duration, 60) . ':' . ($service->duration % 60) . ' Hour(s)',
+                    'quantity' => $service->quantity,
+                    'allDay' => $service->allDay(),
+                    'hasDuration' => $service->hasDuration(),
+                    'requiresDuration' => $service->requiresDuration(),
                 ]),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
             'company' => $company,
@@ -55,20 +59,50 @@ class ServiceController extends Controller {
             'description' => 'required|string',
             'price' => 'int|nullable',
             'duration' => 'nullable|int',
-            'allDay' => 'nullable|boolean',
+            'defaultDuration' => 'nullable|boolean',
+            'fullDay' => 'nullable|boolean',
+            'quantity' => 'nullable|int',
         ]);
+
         $service = new Service();
         $service->title = $request->title;
         $service->description = $request->description;
-        $service->company_id = $company->id;
         $service->price = $request->price;
-        if($request->allDay != false)
+        $service->quantity = $request->quantity;
+        $service->company_id = $company->id;
+
+//        defaultDuration being false means on creating a booking there will need to be a duration
+//        defaultDuration being true means a duration will need providing on the service create screen
+        if($request->fullDay === true && $request->defaultDuration === false)
         {
+            $service->duration = null;
+            $service->full_day = false;
+        }
+        //false is backwards so if user input is false its selected
+        //if full day isn't checked duration is empty and the user needs to input a service duration
+        if($request->defaultDuration === false)
+        {
+            //duration will be empty as users will input how long they need
+            $service->duration = null;
+            $service->full_day = false;
+        }
+        if($request->fullDay === true && $request->defaultDuration === true)
+        {
+            //duration will be empty as users will input how long they need
+            $service->duration = null;
+            //if the user is inputting the service time it cannot be all day
+            $service->full_day = true;
+        }
+        if($request->fullDay === false && $request->duration !== null)
+        {
+            //enter how long the default duration will be
             $service->duration = $request->duration;
+            //if the user is inputting the service time it cannot be all day
+            $service->full_day = false;
         }
         $service->save();
 
-        return to_route('companies.services' , $company->id);
+        return to_route('companies.services', $company->id);
 
     }
 

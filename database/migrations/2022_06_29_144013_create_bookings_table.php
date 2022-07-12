@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('ref');
             $table->dateTime('date_booked');
+            $table->integer('duration')->nullable();
             $table->boolean('status');
             $table->timestamps();
         });

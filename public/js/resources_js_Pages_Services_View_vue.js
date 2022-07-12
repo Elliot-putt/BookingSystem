@@ -123,7 +123,7 @@ var _hoisted_6 = {
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-4 text-start d-flex flex-column justify-content-evenly bg-primary rounded p-4"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  height: "110px",
+  "class": "img-small",
   src: "https://www.centrallearning.co.uk/wp-content/uploads/2022/06/CLPT-Logo-SQ.png"
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "mx-auto"
@@ -140,7 +140,15 @@ var _hoisted_8 = {
 };
 var _hoisted_9 = ["textContent"];
 var _hoisted_10 = ["textContent"];
-var _hoisted_11 = ["textContent"];
+var _hoisted_11 = {
+  key: 0,
+  textContent: 'Duration: All Day'
+};
+var _hoisted_12 = ["textContent"];
+var _hoisted_13 = {
+  key: 2,
+  textContent: 'Between Working Hours'
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -197,11 +205,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "data-active": "I'M ACTIVE"
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+            return [service.allDay ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_11)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.hasDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+              key: 1,
               textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Duration: ' + service.duration)
             }, null, 8
             /* PROPS */
-            , _hoisted_11)];
+            , _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.requiresDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
           }),
           _: 2
           /* DYNAMIC */

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->text('description');
             $table->foreignId('company_id');
             $table->foreignId('price')->nullable();
-            $table->foreignId('duration')->nullable();
+            $table->integer('duration')->nullable();
+            $table->boolean('full_day')->nullable();
+            $table->boolean('quantity')->nullable();
             $table->timestamps();
         });
     }
