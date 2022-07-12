@@ -50,7 +50,11 @@
         <div v-for="time in times" class="text-center col-2 mx-2 my-2 px-3 py-1 bg-light border rounded ">
             <button class="btn" @click="book($event.target , time)" v-text="time"></button>
         </div>
+        <div v-show="times.length < 1" class="text-center col-2 mx-2 my-2 px-3 py-1 bg-red border rounded ">
+            <button class="btn text-white" >No Bookings available!</button>
+        </div>
     </div>
+
     <div v-show="confirm" class="row mt-5 justify-content-center mx-auto w-50">
         <div class="card shadow">
             <div class="card-body">
@@ -132,6 +136,7 @@ let select = (date) => {
     Inertia.get(`/booking/times/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}`, {
         preserveState: true,
     });
+
 }
 //button/time clicked
 let book = (e, time) => {

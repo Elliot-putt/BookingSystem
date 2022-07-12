@@ -127,25 +127,11 @@ class BookingController extends Controller {
             //Check if there are any times returned if so this function removes all the currently booked slots and times
             if($times)
             {
-                //if it's the current day offset the array with how many hours the day has been through the working day -- all types do this
-                if($queryDate->isCurrentDay())
-                {
-                    //if the time now is before the hours start time of the business ignore it
-                    if(! Carbon::parse(now()->addHour())->isBefore(now()->format('m/d/Y') . ' ' . $dayHours[$key_1]))
-                    {
-                        $hourTillPresent = Hour::hoursBetween($dayHours[$key_1], Carbon::now()->addHour()->format('H:i'));
-                        $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[$key_1], $dayHours[$key_2]);
-                        $times = array_diff_key($times, $timesSoFar);
-                    }
-                }
                 if($service->hasDuration())
                 {
-
+//do normal logic and return
                 }
-                if($service->allDay())
-                {
 
-                }
                 if($service->requiresDuration())
                 {
 
@@ -173,7 +159,17 @@ class BookingController extends Controller {
                     }
                 }
             }
-
+            //if it's the current day offset the array with how many hours the day has been through the working day -- all types do this
+            if($queryDate->isCurrentDay())
+            {
+                //if the time now is before the hours start time of the business ignore it
+                if(! Carbon::parse(now()->addHour())->isBefore(now()->format('m/d/Y') . ' ' . $dayHours[$key_1]))
+                {
+                    $hourTillPresent = Hour::hoursBetween($dayHours[$key_1], Carbon::now()->addHour()->format('H:i'));
+                    $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[$key_1], $dayHours[$key_2]);
+                    $times = array_diff_key($times, $timesSoFar);
+                }
+            }
             //checks if the duration runs over the closing time of the company if so remove it
             foreach($times as $time)
             {
@@ -183,6 +179,35 @@ class BookingController extends Controller {
                 {
                     $arrayKey = array_search($time, $times);
                     unset($times[$arrayKey]);
+                }
+            }
+
+        }
+
+        if($service->allDay())
+        {
+            //check if there's a quantity if so check how many bookings there are so far
+            if($quantity = $service->quantity)
+            {
+                //if there are less booking than quantity do below
+                if($bookings->count() < $quantity)
+                {
+                    $availability =  $quantity - $bookings->count();
+                    // return as $times single item array saying 5 slots available
+                    $times = [0 => "$availability Items left for booking for $dayHours[$key_1] until $dayHours[$key_2]"];
+
+                }else{
+                    $times = [];
+                }
+
+            }
+            if($quantity = ! $service->quantity)
+            {
+                if($bookings->count() < 1)
+                {
+                    $times = [0 => "Item available for {$dayHours[$key_1]} until  {$dayHours[$key_2]}"];
+                }else{
+                    $times = [];
                 }
             }
 
@@ -228,7 +253,13 @@ class BookingController extends Controller {
 
     public function store(Company $company, Service $service, Request $request)
     {
-        $date = $request->date . ' ' . $request->time;
+        if($service->allDay())
+        {
+            $date = $request->date;
+        } else
+        {
+            $date = $request->date . ' ' . $request->time;
+        }
         $booking = Booking::create([
             'company_id' => $company->id,
             'service_id' => $service->id,
