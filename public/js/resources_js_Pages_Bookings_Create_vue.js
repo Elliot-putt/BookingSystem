@@ -38,7 +38,8 @@ __webpack_require__.r(__webpack_exports__);
     prevMonth: String,
     company: Object,
     service: Object,
-    dateBooked: String
+    dateBooked: String,
+    duration: String
   },
   emits: ["select"],
   setup: function setup(__props, _ref) {
@@ -58,7 +59,8 @@ __webpack_require__.r(__webpack_exports__);
       service: '',
       email: page.auth.user.email,
       date: dateBooked,
-      time: selectedTime
+      time: selectedTime,
+      duration: page.duration
     }); //post the booking
 
     var submit = function submit() {
@@ -83,7 +85,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
     var select = function select(date) {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.get("/booking/times/".concat(page.company.id, "/").concat(page.service.id, "/").concat(date, "/").concat(page.month, "/").concat(page.year), {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.get("/booking/times/".concat(page.company.id, "/").concat(page.service.id, "/").concat(date, "/").concat(page.month, "/").concat(page.year, "/").concat(page.duration), {
         preserveState: true
       });
     }; //button/time clicked

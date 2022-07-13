@@ -51,7 +51,7 @@
             <button class="btn" @click="book($event.target , time)" v-text="time"></button>
         </div>
         <div v-show="times.length < 1" class="text-center col-2 mx-2 my-2 px-3 py-1 bg-red border rounded ">
-            <button class="btn text-white" >No Bookings available!</button>
+            <button class="btn text-white">No Bookings available!</button>
         </div>
     </div>
 
@@ -98,6 +98,7 @@ defineProps({
     company: Object,
     service: Object,
     dateBooked: String,
+    duration: String,
 });
 let page = usePage().props.value;
 let confirm = ref(false);
@@ -112,7 +113,7 @@ let form = useForm({
     email: page.auth.user.email,
     date: dateBooked,
     time: selectedTime,
-
+    duration: page.duration,
 });
 //post the booking
 let submit = () => {
@@ -133,7 +134,7 @@ let next = () => {
 }
 //this gets the times that the company is available for bookings
 let select = (date) => {
-    Inertia.get(`/booking/times/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}`, {
+    Inertia.get(`/booking/times/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}/${page.duration}`, {
         preserveState: true,
     });
 
@@ -151,7 +152,6 @@ const isPast = (date) => {
 };
 //determines if date is in the past then returns the appropriate classes
 const classList = computed(async => (date) => {
-
     let className = '';
     if (date + page.month + page.year === page.today) {
         className = 'active-day'

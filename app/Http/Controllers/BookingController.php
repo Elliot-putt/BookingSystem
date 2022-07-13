@@ -86,11 +86,12 @@ class BookingController extends Controller {
             'daysAmount' => $days,
             'company' => $company,
             'service' => $service,
+            'duration' => is_numeric(\request('duration')) ? floor(\request('duration')) : floor(60),
         ]);
     }
 
     //returns time slots to view
-    public function timeSlots(Company $company, Service $service, $day = null, $month = null, $year = null)
+    public function timeSlots(Company $company, Service $service, $day = null, $month = null, $year = null, $duration = null)
     {
         if(! $month) $month = Carbon::now()->format('m');
         if(! $year) $year = Carbon::now()->format('Y');
@@ -102,13 +103,28 @@ class BookingController extends Controller {
 
         $day = strtolower(Carbon::parse($month . '/' . $day . '/' . $year)->format('l'));
 
-        //all company bookings for that day
-        //change $service to company if you want the bookings to be whole company related not service related
-        $bookings = $service->bookings()->get()->map(fn($booking) => [
-            'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
-            'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
-            'service_duration' => $booking->service->duration,
-        ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+        if($service->requiresDuration())
+        {
+            //all company bookings for that day
+            //change $service to $company if you want the bookings to be whole company related not service related
+            $bookings = $service->bookings()->get()->map(fn($booking) => [
+                'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+                'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+                'service_duration' => $booking->duration,
+            ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+        }
+        if($service->hasDuration())
+        {
+            //all company bookings for that day
+            //change $service to $company if you want the bookings to be whole company related not service related
+            $bookings = $service->bookings()->get()->map(fn($booking) => [
+                'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+                'start_time' => Carbon::parse($booking->date_booked)->format('Y-m-d H:i'),
+                'end_time' => Carbon::parse($booking->date_booked)->addMinutes($booking->duration)->format('Y-m-d H:i'),
+                'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+                'service_duration' => $booking->service->duration,
+            ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+        }
 
         $filtered = [];
         $hours = $company->hours->toArray();
@@ -127,37 +143,75 @@ class BookingController extends Controller {
             //Check if there are any times returned if so this function removes all the currently booked slots and times
             if($times)
             {
+                //if duration is default then set it as it will use the default of 60 minutes if not
                 if($service->hasDuration())
                 {
-//do normal logic and return
+                    $duration = $service->duration;
                 }
-
-                if($service->requiresDuration())
+                //if there is a quantity count how many bookings there are between the booking time and if it goes over quantity show no more
+                if($service->quantity)
                 {
-
-                }
-                //foreach all the bookings for the queried date and unset them, so they can tbe selected
-                foreach($bookings as $booked)
-                {
-                    //foreach time '09:00' check if the time is between the available hours and if the booking is unset the time
-                    foreach($times as $time)
+                    //foreach all the bookings for the queried date and unset them, so they can tbe selected
+                    foreach($bookings as $booked)
                     {
-                        $bookingTime = Carbon::createFromTimeString($booked['time_booked'])->subMinute();
-                        $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute();
-                        $timeFromString = Carbon::createFromTimeString($time);
-                        if($timeFromString->isBetween($bookingTime, $afterDuration))
+                        //foreach time '09:00' check if the time is between the available hours and if the booking is unset the time
+                        foreach($times as $time)
                         {
-                            $arrayKey = array_search($time, $times);
-                            unset($times[$arrayKey]);
-                        }
-                        //if time + service duration is between the booked time and after-duration delete the time as it cannot overlap
-                        if($timeFromString->addMinutes($service->duration)->isBetween($bookingTime, $afterDuration))
-                        {
-                            $arrayKey = array_search($time, $times);
-                            unset($times[$arrayKey]);
+                            $t = \Carbon\Carbon::parse($now->format('Y-m-d') . ' ' . $time);
+                            $bookingTime = Carbon::createFromTimeString($booked['time_booked'])->subMinute();
+                            $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute();
+                            $timeFromString = Carbon::createFromTimeString($time);
+                            if($timeFromString->isBetween($bookingTime, $afterDuration))
+                            {
+
+                                //get all booking between the foreach time
+                                $bookingsTime = $bookings->where('start_time', '<', $t)->where('end_time', '>', $t)->count();
+                                if($bookingsTime < $service->quantity)
+                                {
+
+                                } else
+                                {
+                                    $arrayKey = array_search($time, $times);
+                                    unset($times[$arrayKey]);
+                                }
+
+                            }
+                            //if time + service duration is between the booked time and after-duration delete the time as it cannot overlap
+                            if($timeFromString->addMinutes($duration)->isBetween($bookingTime, $afterDuration))
+                            {
+                                $arrayKey = array_search($time, $times);
+                                unset($times[$arrayKey]);
+                            }
                         }
                     }
                 }
+                //if there is no quantity just offset booking
+                if(! $service->quantity)
+                {
+                    //foreach all the bookings for the queried date and unset them, so they can tbe selected
+                    foreach($bookings as $booked)
+                    {
+                        //foreach time '09:00' check if the time is between the available hours and if the booking is unset the time
+                        foreach($times as $time)
+                        {
+                            $bookingTime = Carbon::createFromTimeString($booked['time_booked'])->subMinute();
+                            $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute();
+                            $timeFromString = Carbon::createFromTimeString($time);
+                            if($timeFromString->isBetween($bookingTime, $afterDuration))
+                            {
+                                $arrayKey = array_search($time, $times);
+                                unset($times[$arrayKey]);
+                            }
+                            //if time + service duration is between the booked time and after-duration delete the time as it cannot overlap
+                            if($timeFromString->addMinutes($duration)->isBetween($bookingTime, $afterDuration))
+                            {
+                                $arrayKey = array_search($time, $times);
+                                unset($times[$arrayKey]);
+                            }
+                        }
+                    }
+                }
+
             }
             //if it's the current day offset the array with how many hours the day has been through the working day -- all types do this
             if($queryDate->isCurrentDay())
@@ -175,7 +229,7 @@ class BookingController extends Controller {
             {
                 $queryTime = Carbon::parse($queryDate->format('m/d/Y') . ' ' . $time);
                 $endTime = Carbon::parse($queryDate->format('m/d/Y') . ' ' . $dayHours[$key_2]);
-                if($queryTime->addMinutes($service->duration)->isAfter($endTime))
+                if($queryTime->addMinutes($duration)->isAfter($endTime))
                 {
                     $arrayKey = array_search($time, $times);
                     unset($times[$arrayKey]);
@@ -186,27 +240,30 @@ class BookingController extends Controller {
 
         if($service->allDay())
         {
+            $quantity = $service->quantity;
             //check if there's a quantity if so check how many bookings there are so far
-            if($quantity = $service->quantity)
+            if($quantity)
             {
                 //if there are less booking than quantity do below
                 if($bookings->count() < $quantity)
                 {
-                    $availability =  $quantity - $bookings->count();
+                    $availability = $quantity - $bookings->count();
                     // return as $times single item array saying 5 slots available
                     $times = [0 => "$availability Items left for booking for $dayHours[$key_1] until $dayHours[$key_2]"];
 
-                }else{
+                } else
+                {
                     $times = [];
                 }
 
             }
-            if($quantity = ! $service->quantity)
+            if($quantity)
             {
                 if($bookings->count() < 1)
                 {
                     $times = [0 => "Item available for {$dayHours[$key_1]} until  {$dayHours[$key_2]}"];
-                }else{
+                } else
+                {
                     $times = [];
                 }
             }
@@ -248,11 +305,14 @@ class BookingController extends Controller {
             'service' => $service,
             'times' => $times,
             'dateBooked' => $month . '/' . $dayDigit . '/' . $year,
+            'duration' => $duration,
+
         ]);
     }
 
     public function store(Company $company, Service $service, Request $request)
     {
+
         if($service->allDay())
         {
             $date = $request->date;
@@ -266,6 +326,7 @@ class BookingController extends Controller {
             'user_id' => auth()->user()->id,
             'ref' => time() . '-' . auth()->user()->id,
             'date_booked' => Carbon::parse($date),
+            'duration' => $request->duration,
             'status' => 0,
         ]);
 

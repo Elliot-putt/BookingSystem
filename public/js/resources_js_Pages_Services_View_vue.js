@@ -13,6 +13,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Shared_TitleLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Shared/TitleLayout */ "./resources/js/Shared/TitleLayout.vue");
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -28,17 +32,25 @@ __webpack_require__.r(__webpack_exports__);
         emit = _ref.emit;
     expose();
     var page = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.value;
+    var duration = (0,vue__WEBPACK_IMPORTED_MODULE_3__.ref)();
 
-    var show = function show() {
-      alert(page.services);
+    var getDuration = function getDuration(service, company) {
+      if (duration.value) {
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.get("/booking/".concat(company.id, "/").concat(service.id, "/"), {
+          duration: duration.value
+        });
+      }
     };
 
     var __returned__ = {
       emit: emit,
       page: page,
-      show: show,
+      duration: duration,
+      getDuration: getDuration,
       TitleLayout: _Shared_TitleLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
-      usePage: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.usePage
+      usePage: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.usePage,
+      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia,
+      ref: vue__WEBPACK_IMPORTED_MODULE_3__.ref
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -105,7 +117,7 @@ var _hoisted_2 = {
   "class": "d-flex justify-content-end m-4"
 };
 
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Create a new Service +");
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Create a new Service + ");
 
 var _hoisted_4 = {
   "class": "row justify-content-center"
@@ -120,20 +132,7 @@ var _hoisted_6 = {
   }
 };
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "col-md-4 text-start d-flex flex-column justify-content-evenly bg-primary rounded p-4"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  "class": "img-small",
-  src: "https://www.centrallearning.co.uk/wp-content/uploads/2022/06/CLPT-Logo-SQ.png"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "mx-auto"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "text-center m-0 text-white"
-}, "Popularity"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "py-1 px-4 bg-light rounded"
-}, "75%")])], -1
-/* HOISTED */
-);
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"col-md-4 text-start d-flex flex-column justify-content-evenly bg-primary rounded p-4\"><img class=\"img-small\" src=\"https://www.centrallearning.co.uk/wp-content/uploads/2022/06/CLPT-Logo-SQ.png\"><div class=\"mx-auto\"><p class=\"text-center m-0 text-white\">Popularity</p><span class=\"py-1 px-4 bg-light rounded\">75%</span></div></div>", 1);
 
 var _hoisted_8 = {
   "class": "col-md-8 text-center d-flex flex-column justify-content-evenly px-4 py-3"
@@ -146,6 +145,18 @@ var _hoisted_11 = {
 };
 var _hoisted_12 = ["textContent"];
 var _hoisted_13 = {
+  key: 2,
+  textContent: 'Between Working Hours'
+};
+var _hoisted_14 = {
+  key: 1
+};
+var _hoisted_15 = {
+  key: 0,
+  textContent: 'Duration: All Day'
+};
+var _hoisted_16 = ["textContent"];
+var _hoisted_17 = {
   key: 2,
   textContent: 'Between Working Hours'
 };
@@ -181,50 +192,73 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.services, function (service) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+      "class": "fs-5",
+      textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(service.title)
+    }, null, 8
+    /* PROPS */
+    , _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+      textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(service.description)
+    }, null, 8
+    /* PROPS */
+    , _hoisted_10), !service.requiresDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+      key: 0,
       as: "button",
       href: "/booking/".concat($props.company.id, "/").concat(service.id, "/"),
-      "class": "btn d-flex p-0 m-0"
+      "class": "button",
+      type: "button",
+      "data-hover": "Book Now",
+      "data-active": "I'M ACTIVE"
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-          "class": "fs-5",
-          textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(service.title)
+        return [service.allDay ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_11)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.hasDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+          key: 1,
+          textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Duration: ' + service.duration)
         }, null, 8
         /* PROPS */
-        , _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-          textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(service.description)
-        }, null, 8
-        /* PROPS */
-        , _hoisted_10), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-          as: "button",
-          href: "/booking/".concat($props.company.id, "/").concat(service.id, "/"),
-          "class": "button",
-          type: "button",
-          "data-hover": "Book Now",
-          "data-active": "I'M ACTIVE"
-        }, {
-          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [service.allDay ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_11)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.hasDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
-              key: 1,
-              textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Duration: ' + service.duration)
-            }, null, 8
-            /* PROPS */
-            , _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.requiresDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
-          }),
-          _: 2
-          /* DYNAMIC */
-
-        }, 1032
-        /* PROPS, DYNAMIC_SLOTS */
-        , ["href"])])];
+        , _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.requiresDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
       }),
       _: 2
       /* DYNAMIC */
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["href"])]);
+    , ["href"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      type: "text",
+      name: "duration",
+      required: "",
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$setup.duration === undefined || $setup.duration === '' ? 'border-warning' : '', "form-control text-center input-flow mx-auto card-css-shadow px-2"]),
+      id: "duration",
+      placeholder: "Duration in minutes",
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+        return $setup.duration = $event;
+      })
+    }, null, 2
+    /* CLASS */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.duration]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+      as: "button",
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return $setup.getDuration(service, $props.company);
+      }, ["prevent"]),
+      "class": "button",
+      type: "button",
+      "data-hover": "Book Now",
+      "data-active": "I'M ACTIVE"
+    }, {
+      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+        return [service.allDay ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_15)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.hasDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+          key: 1,
+          textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Duration: ' + service.duration)
+        }, null, 8
+        /* PROPS */
+        , _hoisted_16)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), service.requiresDuration ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+      }),
+      _: 2
+      /* DYNAMIC */
+
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["onClick"])]))])]);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))])])], 64
