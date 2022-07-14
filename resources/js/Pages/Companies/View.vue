@@ -14,7 +14,7 @@
                 <label class="me-2 my-auto">Name Filter:</label>
                 <input type="text" class="border rounded p-2" v-model="search" placeholder="Search.....">
             </div>
-            <table class="table table-striped  table-hover table-responsive ">
+            <table class="table  table-responsive ">
                 <thead>
                 <tr>
                     <th scope="col" >Name</th>
