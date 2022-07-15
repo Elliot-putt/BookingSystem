@@ -5,13 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Boolean;
+use Spatie\MediaLibrary\HasMedia as HasMediaAlias;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Service extends Model {
+class Service extends Model implements HasMediaAlias{
 
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $guarded = [];
 
+    //Spatie Media library allows file uploads
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('Service');
+    }
+     public function Photo()
+     {
+         return $this->getFirstMediaUrl('Service');
+     }
     public function excerpt()
     {
         return str($this->description)->ltrim(20) . ' ...';
@@ -38,6 +49,7 @@ class Service extends Model {
             return false;
         }
     }
+
     //Checks if the service is for all day
     public function allDay()
     {
@@ -49,6 +61,7 @@ class Service extends Model {
             return false;
         }
     }
+
     //checks if the user is allowed to input how long they need the service for
     public function hasDuration()
     {
@@ -59,6 +72,20 @@ class Service extends Model {
         {
             return false;
         }
+    }
+
+    //returns the percentage of a service being booked
+    public function popularity(): int
+    {
+        $companyBookingsPercentage = 100 / $this->company->bookings()->count();
+        $servicePopularity = 0;
+
+        foreach($this->bookings()->get() as $service)
+        {
+            $servicePopularity = $servicePopularity + $companyBookingsPercentage;
+        }
+
+        return $servicePopularity;
     }
 
 }

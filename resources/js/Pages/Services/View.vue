@@ -6,7 +6,7 @@
     <TitleLayout :title="company.name + ' - services'"
                  description="This page allows you to search Companies services. If you Believe you should have more access please contact test@gmail.com"/>
     <div class="d-flex justify-content-end m-4">
-        <Link :href="`/company/${company.id}/service/create`" class="text-decoration-none my-auto mx-2">Create a new
+        <Link :href="`/company/${company.id}/service/create`" class="text-decoration-none my-auto mx-2 btn btn-blue">Create a new
             Service +
         </Link>
     </div>
@@ -15,11 +15,11 @@
             <div v-for="service in services" class="col-md-3 bg-light rounded row m-0 p-0 shadow m-2"
                  style="min-height: 270px">
                 <div class="col-md-4 text-start d-flex flex-column justify-content-evenly bg-primary rounded p-4">
-                    <img class="img-small"
-                         src="https://www.centrallearning.co.uk/wp-content/uploads/2022/06/CLPT-Logo-SQ.png">
+                    <img class="service-img"
+                         :src="service.photo || photo">
                     <div class="mx-auto">
                         <p class="text-center m-0 text-white">Popularity</p>
-                        <span class="py-1 px-4 bg-light rounded">75%</span>
+                        <span class="py-1 px-4 bg-light rounded">{{ service.popularity }}%</span>
                     </div>
                 </div>
                 <div class="col-md-8 text-center d-flex flex-column justify-content-evenly px-4 py-3">
@@ -31,8 +31,10 @@
                         <span v-if="service.hasDuration" v-text="'Duration: ' + service.duration"></span>
                         <span v-if="service.requiresDuration" v-text="'Between Working Hours'"></span>
                     </Link>
+                    <!--this is for custom durations-->
                     <div v-else>
-                        <input type="text" name="duration" required :class="duration === undefined || duration === ''  ? 'border-warning' : '' "
+                        <input type="text" name="duration" required
+                               :class="duration === undefined || duration === ''  ? 'border-bottom-red' : '' "
                                class="form-control text-center input-flow mx-auto card-css-shadow px-2" id="duration"
                                placeholder="Duration in minutes" v-model="duration">
                         <Link as="button" @click.prevent="getDuration(service , company)" class="button" type="button"
@@ -53,16 +55,19 @@ import TitleLayout from "../../Shared/TitleLayout";
 import {usePage} from "@inertiajs/inertia-vue3";
 import {Inertia} from "@inertiajs/inertia";
 import {ref} from "vue";
+
 let emit = defineEmits(["bookModal"])
 let page = usePage().props.value;
 let duration = ref();
+import photo from "../../../../public/images/simplycentrawhitel.png";
+
 defineProps({
     company: Object,
     services: Object,
     filters: Object,
 })
 let getDuration = (service, company) => {
-    if (duration.value ) {
+    if (duration.value) {
         Inertia.get(`/booking/${company.id}/${service.id}/`, {duration: duration.value});
     }
 }

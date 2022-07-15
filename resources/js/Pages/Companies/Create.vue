@@ -17,10 +17,14 @@
                         <span class="next"><a href="#" @click="next($event.target)">&#10095;</a></span>
                     </div>
                     <div class="card-body row justify-content-center">
-                        <h4 class="mb-2 text-center">Company Information</h4>
+                        <div class="col-12">
+                            <h4 class="mx-auto mb-2 text-center text-blue ">Company Information</h4>
+                            <div class="mx-auto mb-4 border-bottom border-2 border-dark w-25"></div>
+
+                        </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="name" class="form-label fw-bold">Name <span
+                                <label for="name" class="form-label  text-blue fw-bold">Name <span
                                     class="text-danger">*</span></label>
                                 <div v-if="form.errors.name" v-text="' - ' + form.errors.name"
                                      class=" text-danger fs-6 mx-2"></div>
@@ -33,7 +37,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="email" class="form-label fw-bold">Email</label>
+                                <label for="email" class="form-label text-blue fw-bold">Email</label>
                                 <div v-if="form.errors.email" v-text="' - ' + form.errors.email"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -45,7 +49,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="telephone" class="form-label fw-bold">Telephone</label>
+                                <label for="telephone" class="form-label text-blue fw-bold">Telephone</label>
                                 <div v-if="form.errors.telephone" v-text="' - ' + form.errors.telephone"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -57,7 +61,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="url" class="form-label fw-bold">Url</label>
+                                <label for="url" class="form-label text-blue fw-bold">Url</label>
                                 <div v-if="form.errors.url" v-text="' - ' + form.errors.url"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -69,7 +73,7 @@
                         </div>
                         <div class="col-10">
                             <div class="d-flex">
-                                <label for="address_1" class="form-label fw-bold">Address 1</label>
+                                <label for="address_1" class="form-label text-blue fw-bold">Address 1</label>
                                 <div v-if="form.errors.address_1" v-text="' - ' + form.errors.address_1"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -81,7 +85,7 @@
                         </div>
                         <div class="col-10">
                             <div class="d-flex">
-                                <label for="address_2" class="form-label fw-bold">Address 2</label>
+                                <label for="address_2" class="form-label text-blue fw-bold">Address 2</label>
                                 <div v-if="form.errors.address_2" v-text="' - ' + form.errors.address_2"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -93,7 +97,7 @@
                         </div>
                         <div class="col-10">
                             <div class="d-flex">
-                                <label for="city" class="form-label fw-bold">City</label>
+                                <label for="city" class="form-label text-blue fw-bold">City</label>
                                 <div v-if="form.errors.city" v-text="' - ' + form.errors.city"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -105,7 +109,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="county" class="form-label fw-bold">County</label>
+                                <label for="county" class="form-label text-blue fw-bold">County</label>
                                 <div v-if="form.errors.county" v-text="' - ' + form.errors.county"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -117,7 +121,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="postcode" class="form-label fw-bold">Postcode</label>
+                                <label for="postcode" class="form-label text-blue fw-bold">Postcode</label>
                                 <div v-if="form.errors.postcode" v-text="' - ' + form.errors.postcode"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -137,10 +141,13 @@
                         <span class="next"><a href="#" @click="next($event.target)">&#10095;</a></span>
                     </div>
                     <div class="card-body row justify-content-center">
-                        <h4 class="mb-2 text-center">Working Hours</h4>
+                        <div class="col-12">
+                            <h4 class="mx-auto mb-2 text-center text-blue ">Working Hours</h4>
+                            <div class="mx-auto mb-4 border-bottom border-2 border-dark w-25"></div>
+                        </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="monday_start" class="form-label fw-bold">Monday Start Time</label>
+                                <label for="monday_start" class="form-label text-blue fw-bold">Monday Start Time</label>
                                 <div v-if="form.errors.monday_start" v-text="' - ' + form.errors.monday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -155,7 +162,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="monday_end" class="form-label fw-bold">Monday End Time</label>
+                                <label for="monday_end" class="form-label text-blue fw-bold">Monday End Time</label>
                                 <div v-if="form.errors.monday_end" v-text="' - ' + form.errors.monday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -170,7 +177,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="tuesday_start" class="form-label fw-bold">Tuesday Start Time</label>
+                                <label for="tuesday_start" class="form-label text-blue fw-bold">Tuesday Start Time</label>
                                 <div v-if="form.errors.tuesday_start" v-text="' - ' + form.errors.tuesday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -185,7 +192,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="tuesday_end" class="form-label fw-bold">Tuesday End Time</label>
+                                <label for="tuesday_end" class="form-label text-blue fw-bold">Tuesday End Time</label>
                                 <div v-if="form.errors.tuesday_end" v-text="' - ' + form.errors.tuesday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -200,7 +207,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="wednesday_start" class="form-label fw-bold">Wednesday Start Time</label>
+                                <label for="wednesday_start" class="form-label text-blue fw-bold">Wednesday Start Time</label>
                                 <div v-if="form.errors.wednesday_start" v-text="' - ' + form.errors.wednesday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -215,7 +222,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="wednesday_end" class="form-label fw-bold">Wednesday End Time</label>
+                                <label for="wednesday_end" class="form-label text-blue fw-bold">Wednesday End Time</label>
                                 <div v-if="form.errors.wednesday_end" v-text="' - ' + form.errors.wednesday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -230,7 +237,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="thursday_start" class="form-label fw-bold">Thursday Start Time</label>
+                                <label for="thursday_start" class="form-label text-blue fw-bold">Thursday Start Time</label>
                                 <div v-if="form.errors.thursday_start" v-text="' - ' + form.errors.thursday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -245,7 +252,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="thursday_end" class="form-label fw-bold">Thursday End Time</label>
+                                <label for="thursday_end" class="form-label text-blue fw-bold">Thursday End Time</label>
                                 <div v-if="form.errors.thursday_end" v-text="' - ' + form.errors.thursday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -260,7 +267,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="friday_start" class="form-label fw-bold">Friday Start Time</label>
+                                <label for="friday_start" class="form-label text-blue fw-bold">Friday Start Time</label>
                                 <div v-if="form.errors.friday_start" v-text="' - ' + form.errors.friday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -275,7 +282,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="friday_end" class="form-label fw-bold">Friday End Time</label>
+                                <label for="friday_end" class="form-label text-blue fw-bold">Friday End Time</label>
                                 <div v-if="form.errors.friday_end" v-text="' - ' + form.errors.friday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -290,7 +297,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="saturday_start" class="form-label fw-bold">Saturday Start Time</label>
+                                <label for="saturday_start" class="form-label text-blue fw-bold">Saturday Start Time</label>
                                 <div v-if="form.errors.saturday_start" v-text="' - ' + form.errors.saturday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -305,7 +312,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="saturday_end" class="form-label fw-bold">Saturday End Time</label>
+                                <label for="saturday_end" class="form-label text-blue fw-bold">Saturday End Time</label>
                                 <div v-if="form.errors.saturday_end" v-text="' - ' + form.errors.saturday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>
@@ -320,7 +327,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="sunday_start" class="form-label fw-bold">sunday Start Time</label>
+                                <label for="sunday_start" class="form-label text-blue  fw-bold">sunday Start Time</label>
                                 <div v-if="form.errors.sunday_start" v-text="' - ' + form.errors.sunday_start"
                                      class=" text-danger fs-6 mx-2"></div>
                             </div>
@@ -335,7 +342,7 @@
                         </div>
                         <div class="col-5">
                             <div class="d-flex">
-                                <label for="sunday_end" class="form-label fw-bold">sunday End Time</label>
+                                <label for="sunday_end" class="form-label text-blue fw-bold">sunday End Time</label>
                                 <div v-if="form.errors.sunday_end" v-text="' - ' + form.errors.sunday_end"
                                      class="text-danger fs-6 mx-2"></div>
                             </div>

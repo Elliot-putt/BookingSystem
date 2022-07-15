@@ -5,7 +5,7 @@
     </Head>
     <TitleLayout title="Create new Service"
                  description=" fill in the details below to create a Service. If you Believe you should have more access  contact test@gmail.com"/>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" >
         <div class="row justify-content-center h-100">
             <div v-if="Object.keys(form.errors).length > 0"
                  class="d-flex justify-content-center alert alert-danger w-50">
@@ -31,7 +31,7 @@
                         <div class="col-5">
                             <label for="file" class="mb-2 fw-bold">Select the Image to upload a photo:</label>
                             <div class="mb-2">
-                                <input id="file" type="file" class="form-control" name="file[]"
+                                <input id="file" type="file" @input="form.file = $event.target.files[0]" class="form-control" name="file[]"
                                        accept="file_extension|audio/*|video/*|image/*|media_type">
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             </div>
                             <div class="input-group mt-3">
                                 <input v-if="!fullDay" type="text" name="duration" class="form-control"
-                                       :disabled="!duration" :class="form.errors.duration ? 'border-danger' : '' "
+                                       :disabled="!duration"  :class="form.errors.duration ? 'border-danger' : '' "
                                        v-model="form.duration" placeholder="Enter a Duration in Minutes...">
                             </div>
                         </div>
@@ -142,7 +142,7 @@ let quantity = ref(false);
 let duration = ref(true);
 let page = usePage().props.value;
 let form = useForm({
-    file: '',
+    file: null,
     title: '',
     price: '',
     duration: '',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\FileUpload;
 use App\Models\Company;
 use App\Models\Hour;
 use App\Models\Service;
@@ -30,6 +31,8 @@ class ServiceController extends Controller {
                     'allDay' => $service->allDay(),
                     'hasDuration' => $service->hasDuration(),
                     'requiresDuration' => $service->requiresDuration(),
+                    'popularity' => $service->popularity(),
+                    'photo' => $service->Photo(),
                 ]),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
             'company' => $company,
@@ -47,7 +50,7 @@ class ServiceController extends Controller {
     {
         return Inertia::render('Services/Create', [
             'company' => $company,
-            'services' => $company,
+
         ]);
     }
 
@@ -56,6 +59,7 @@ class ServiceController extends Controller {
 
         $request->validate([
             'title' => 'required|string',
+            'file' => 'nullable|image|mimes:jpeg,jpg,png,bmp,gif,svg',
             'description' => 'required|string',
             'price' => 'int|nullable',
             'duration' => 'nullable|int',
@@ -70,6 +74,20 @@ class ServiceController extends Controller {
         $service->price = $request->price;
         $service->quantity = $request->quantity;
         $service->company_id = $company->id;
+
+        $file = [];
+        $file[] = $request->file;
+        if($request->file)
+        {
+            //remove the current profile picture
+            if($service->hasMedia('Service'))
+            {
+                $fileId = $service->getFirstMedia('Service')->id;
+                MediaController::fileDeleteMethod($fileId);
+            }
+            // This uploads Profile images to a users profile
+            dispatch(new FileUpload($file, $service, 'Service'))->onQueue('low')->afterResponse();
+        }
 
 //        defaultDuration being false means on creating a booking there will need to be a duration
 //        defaultDuration being true means a duration will need providing on the service create screen

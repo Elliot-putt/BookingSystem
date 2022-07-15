@@ -279,6 +279,7 @@ class BookingController extends Controller {
             'month' => $now->format('m'),
             'monthName' => $now->format('F'),
             'year' => $now->format('Y'),
+            'day' => $dayDigit,
             'daysAmount' => $days,
             'company' => $company,
             'service' => $service,

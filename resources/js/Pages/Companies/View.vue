@@ -6,7 +6,7 @@
     <TitleLayout title="Companies"
                  description="This page allows you to search Companies. If you Believe you should have more access please contact test@gmail.com"/>
     <div class="d-flex justify-content-end m-4">
-        <Link href="/company/create" class="text-decoration-none my-auto mx-2">Create a new Company +</Link>
+        <Link href="/company/create" class="text-decoration-none my-auto mx-2 btn btn-blue">Create a new Company +</Link>
     </div>
     <div class="card shadow mb-4">
         <div class=" card-body">
@@ -14,7 +14,7 @@
                 <label class="me-2 my-auto">Name Filter:</label>
                 <input type="text" class="border rounded p-2" v-model="search" placeholder="Search.....">
             </div>
-            <table class="table  table-responsive ">
+            <table class="table table-responsive ">
                 <thead>
                 <tr>
                     <th scope="col" >Name</th>
@@ -41,8 +41,20 @@
                     <td class="d-none d-md-table-cell" v-text="company.email || 'N/A'"></td>
                     <td class="d-none d-md-table-cell" v-text="company.url || 'N/A'"></td>
                     <td class="text-end">
-                        <Link :href="`/company/ ${company.id}/edit`">Edit</Link>
-                        <Link class="mx-2" :href="`/company/${company.id}/service`">Services</Link>
+                        <div class="dropdown no-arrow">
+                            <a class="btn btn-blue dropdown-toggle" href="#" role="button"
+                               id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu text-right dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header text-left">Options:</div>
+                                <Link  class="dropdown-item" :href="`/company/ ${company.id}/edit`">Edit</Link>
+                                <Link class="dropdown-item" :href="`/company/${company.id}/service`">Services</Link>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
                 </tbody>
