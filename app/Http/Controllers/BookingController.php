@@ -39,6 +39,7 @@ class BookingController extends Controller {
                     'status' => $booking->status,
                     'ref' => $booking->ref,
                     'serviceName' => $booking->service->title,
+                    'id' => $booking->id,
                 ]),
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
         ]);
@@ -349,15 +350,11 @@ class BookingController extends Controller {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Booking $booking
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Booking $booking)
     {
-        //
+        $booking->delete();
+
+        return to_route('booking.all');
     }
 
 }

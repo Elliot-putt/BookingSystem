@@ -1,10 +1,11 @@
 <template>
-    <Link as="div" v-for="booking in bookings"  class="bg-light card-css-shadow rounded-hard-blue card-md cursor-click card-shadow col-7 bg-light mx-auto mb-4">
+    <Link as="div" @click="options(booking.id)" v-for="booking in bookings"
+          class="bg-light card-css-shadow rounded-hard-blue card-md cursor-click card-shadow col-7 bg-light mx-auto mb-4">
         <div class="row m-2">
             <div class="col-10 d-flex flex-column">
                 <div class="d-flex me-2 mt-2">
                     <p class="bg-green p-1 rounded flex text-white" v-if="booking.status === 0">Confirmed -
-                                                                                                  #{{ booking.ref }}</p>
+                        #{{ booking.ref }}</p>
                     <p class="bg-grey p-1 rounded flex text-white" v-else-if="booking.status === 1">
                         Finished - #{{ booking.ref }}</p>
                 </div>
@@ -30,10 +31,32 @@
 <script setup>
 import Pagination from "../Shared/Pagination"
 import imageSmall from "../../../public/images/simplycentral.png"
-
+import Swal from "sweetalert2";
+import {Inertia} from "@inertiajs/inertia";
 defineProps({
     bookings: Object
-})
+});
+let options = (id) => {
+    Swal.fire({
+        title: 'Booking Options',
+        text: "All changes are permanent",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#ff6633',
+        cancelButtonColor: '#3f5efb',
+        confirmButtonText: 'Yes, delete my booking!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Inertia.delete(`/booking/${id}/delete`);
+            //delete booking inertia.delete
+            Swal.fire(
+                'Deleted!',
+                'Your Booking has been deleted.',
+                'success'
+            )
+        }
+    })
+}
 </script>
 
 

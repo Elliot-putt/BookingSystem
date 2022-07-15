@@ -32,7 +32,7 @@
 import Pagination from "../../Shared/Pagination"
 import {usePage} from '@inertiajs/inertia-vue3'
 import TitleLayout from "../../Shared/TitleLayout";
-import {computed , ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 import BookingCard from "../../Components/BookingCard";
 import {Inertia} from "@inertiajs/inertia";
 import throttle from "lodash/throttle"
@@ -57,5 +57,5 @@ watch(search, throttle(function (value) {
         preserveState: true,
         replace: true
     });
-} , 500));
+}, 500));
 </script>

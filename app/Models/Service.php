@@ -77,15 +77,19 @@ class Service extends Model implements HasMediaAlias{
     //returns the percentage of a service being booked
     public function popularity(): int
     {
-        $companyBookingsPercentage = 100 / $this->company->bookings()->count();
-        $servicePopularity = 0;
+        $bookingsCount = $this->company->bookings()->count();
+        if($bookingsCount > 0){
+            $companyBookingsPercentage = 100 / $bookingsCount;
+            $servicePopularity = 0;
 
-        foreach($this->bookings()->get() as $service)
-        {
-            $servicePopularity = $servicePopularity + $companyBookingsPercentage;
+            foreach($this->bookings()->get() as $service)
+            {
+                $servicePopularity = $servicePopularity + $companyBookingsPercentage;
+            }
         }
 
-        return $servicePopularity;
+
+        return $servicePopularity ?? 0;
     }
 
 }
