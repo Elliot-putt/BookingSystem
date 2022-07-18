@@ -6,7 +6,8 @@
     <TitleLayout title="Companies"
                  description="This page allows you to search Companies. If you Believe you should have more access please contact test@gmail.com"/>
     <div class="d-flex justify-content-end m-4">
-        <Link href="/company/create" class="text-decoration-none my-auto mx-2 btn btn-blue">Create a new Company +</Link>
+        <Link href="/company/create" class="text-decoration-none my-auto mx-2 btn btn-blue">Create a new Company +
+        </Link>
     </div>
     <div class="card shadow mb-4">
         <div class=" card-body">
@@ -17,7 +18,7 @@
             <table class="table table-responsive ">
                 <thead>
                 <tr>
-                    <th scope="col" >Name</th>
+                    <th scope="col">Name</th>
                     <th scope="col" class=" d-none d-md-table-cell">Address 1</th>
                     <th scope="col" class=" d-none d-md-table-cell">Address 2</th>
                     <th scope="col" class=" d-none d-md-table-cell">City</th>
@@ -48,13 +49,13 @@
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div class="dropdown-menu text-right dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuLink">
+                                 aria-labelledby="dropdownMenuLink">
                                 <div class="dropdown-header text-left">Options:</div>
-                                <Link  class="dropdown-item" :href="`/company/ ${company.id}/edit`">Edit</Link>
+                                <Link class="dropdown-item" :href="`/company/ ${company.id}/show`">View</Link>
+                                <Link class="dropdown-item" :href="`/company/ ${company.id}/edit`">Edit</Link>
                                 <Link class="dropdown-item" :href="`/company/${company.id}/service`">Services</Link>
                             </div>
                         </div>
-
                     </td>
                 </tr>
                 </tbody>
@@ -70,7 +71,6 @@ import {Inertia} from "@inertiajs/inertia";
 import throttle from "lodash/throttle"
 import TitleLayout from "../../Shared/TitleLayout";
 
-
 let props = defineProps({
     companies: Object,
     filters: Object,
@@ -83,4 +83,6 @@ watch(search, throttle(function (value) {
         replace: true
     });
 }, 500));
+
+
 </script>

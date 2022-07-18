@@ -36,7 +36,21 @@
                                        placeholder="Please enter a valid email" v-model="form.email">
                             </div>
                         </div>
-                        <div class="col-8">
+                        <div class="col-6">
+                            <div class="d-flex">
+                                <label for="username" class="form-label fw-bold">Username</label>
+                                <div v-if="form.errors.username" v-text="' - ' + form.errors.username"
+                                     class=" text-danger fs-6 mx-2"></div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" name="username" class="form-control" required
+                                       :class="form.errors.username ? 'border-danger' : '' " id="username"
+                                       placeholder="Please enter a username" v-model="form.username">
+
+                            </div>
+                        </div>
+                        <div class="col-6">
                             <div class="d-flex">
                                 <label for="password" class="form-label fw-bold">Password</label>
                                 <div v-if="form.errors.password" v-text="' - ' + form.errors.password"
@@ -64,6 +78,7 @@ import {useForm} from "@inertiajs/inertia-vue3"
 
 let form = useForm({
     name: '',
+    username: '',
     email: '',
     password: '',
 });

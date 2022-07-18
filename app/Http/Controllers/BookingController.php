@@ -24,7 +24,7 @@ class BookingController extends Controller {
             'booking' => \App\Models\Booking::query()
                 ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
                     $query->where('ref', 'like', "%{$search}%");
-                })->orderBy('date_booked', 'ASC')
+                })->orderBy('date_booked', 'Desc')
                 ->paginate(10)
                 ->withQueryString()
                 ->through(fn($booking) => [

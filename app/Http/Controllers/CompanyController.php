@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\CompanyUser;
 use App\Models\Hour;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -37,13 +38,41 @@ class CompanyController extends Controller {
             'filters' => \Illuminate\Support\Facades\Request::only(['search']),
         ]);
     }
+    public function search(){
+        return Inertia::render('Companies/Search', [
+            'companies' => \App\Models\Company::query()
+                ->when(\Illuminate\Support\Facades\Request::input('search'), function($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn($company) => [
+                    'id' => $company->id,
+                    'name' => $company->name,
+                    'address_1' => $company->address_1,
+                    'address_2' => $company->address_2,
+                    'city' => $company->city,
+                    'county' => $company->county,
+                    'postcode' => $company->postcode,
+                    'telephone' => $company->telephone,
+                    'email' => $company->email,
+                    'url' => $company->url,
+                    'new' => Carbon::parse($company->created_at)->isAfter(Carbon::now()->addDays(14)),
+                    'date' => Carbon::parse($company->created_at)->diffForHumans(),
+                    'bookings' => $company->bookings()->count(),
+                    'members' => $company->members->count(),
+                ]),
+            'filters' => \Illuminate\Support\Facades\Request::only(['search']),
+        ]);
+
+    }
 
     public function create()
     {
         $startTime = '01:00';
         $endTime = '24:00';
-        $hours = Hour::hoursBetween($startTime,$endTime);
-        $times = Hour::timeToArray($hours, 60, $startTime , $endTime);
+        $hours = Hour::hoursBetween($startTime, $endTime);
+        $times = Hour::timeToArray($hours, 60, $startTime, $endTime);
 
         return Inertia::render('Companies/Create', [
             'hours' => $times,
@@ -102,6 +131,42 @@ class CompanyController extends Controller {
 
         dd($company);
 
+    }
+
+    public function show(Company $company)
+    {
+
+        return Inertia::render('Companies/Show', [
+            'company' => $company
+                ->fill([
+                    'id' => $company->id,
+                    'name' => $company->name,
+                    'address_1' => $company->address_1,
+                    'address_2' => $company->address_2,
+                    'city' => $company->city,
+                    'county' => $company->county,
+                    'postcode' => $company->postcode,
+                    'telephone' => $company->telephone,
+                    'email' => $company->email,
+                    'url' => $company->url,
+                    'created_at_date' => Carbon::parse($company->created_at)->diffForHumans(),
+                    'memberCount' => $company->members->count(),
+                ]),
+            'members' => $company->members,
+        ]);
+
+    }
+
+    public function assignUser(Company $company, User $user)
+    {
+        if($user->hasCompany($company->id)){
+            //attach user to the company
+            CompanyUser::create([
+                'company_id' => $company->id,
+                'user_id' => $user->id,
+            ]);
+        }
+        //Send email notification
     }
 
 }

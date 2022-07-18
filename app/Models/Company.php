@@ -32,5 +32,9 @@ class Company extends Model {
 
         return $query->whereIn('id', $company_ids);
     }
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'company_users' );
+    }
 
 }

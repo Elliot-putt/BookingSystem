@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Jobs\RoleBoot;
+use App\Jobs\SettingBoot;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        RoleBoot::dispatch();
+        SettingBoot::dispatch();
          \App\Models\User::factory(1)->create();
 
 //         \App\Models\User::factory()->create([
