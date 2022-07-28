@@ -97,6 +97,9 @@ import {ref} from "vue";
 let emit = defineEmits(["select"]);
 
 defineProps({
+    allDay:Boolean,
+    requiresDuration:Boolean,
+    hasDuration:Boolean,
     times: Array,
     daysAmount: Array,
     startDays: Number,
@@ -149,9 +152,22 @@ let next = () => {
 }
 //this gets the times that the company is available for bookings
 let select = (date) => {
-    Inertia.get(`/booking/times/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}/${page.duration}/#times`, {
-        preserveState: true,
-    });
+    //3 if statement for allday, has duration and requiresduration
+    if (page.hasDuration){
+        Inertia.get(`/booking/times/hasduration/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}/${page.duration}/#times`, {
+            preserveState: true,
+        });
+    }
+    if (page.allDay){
+        Inertia.get(`/booking/times/allday/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}/${page.duration}/#times`, {
+            preserveState: true,
+        });
+    }
+    if (page.requiresDuration){
+        Inertia.get(`/booking/times/requiresduration/${page.company.id}/${page.service.id}/${date}/${page.month}/${page.year}/${page.duration}/#times`, {
+            preserveState: true,
+        });
+    }
 
 }
 //button/time clicked

@@ -36,5 +36,15 @@ class Company extends Model {
     {
         return $this->belongsToMany(User::class, 'company_users' );
     }
+    public function workingHours($day){
+        $filtered = [];
+        $hours = $this->hours->toArray();
+        $key_1 = $day . '_start';
+        $key_2 = $day . '_end';
+        //set keys to monday_end to find them in the array
+        $filtered[$key_1] = '';
+        $filtered[$key_2] = '';
+       return array_intersect_key($hours, $filtered);
+    }
 
 }

@@ -38,7 +38,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/bookings/', 'all')->name('booking.all');
         Route::delete('/booking/{booking}/delete', 'destroy')->name('booking.delete');
         Route::get('/booking/{company}/{service}/{month?}/{year?}/', 'index')->name('booking.default');
-        Route::get('/booking/times/{company}/{service}/{date}/{month}/{year}/{duration?}', 'timeSlots')->name('booking.times');
+        Route::get('/booking/times/allday/{company}/{service}/{date}/{month}/{year}/{duration?}', 'allDayTimeSlots')->name('booking.times');
+        Route::get('/booking/times/hasduration/{company}/{service}/{date}/{month}/{year}/{duration?}', 'hasDurationTimeSlots')->name('booking.times');
+        Route::get('/booking/times/requiresduration/{company}/{service}/{date}/{month}/{year}/{duration?}', 'requiresDurationTimeSlots')->name('booking.times');
         Route::post('/booking/store/{company}/{service}/{duration?}', 'store')->name('booking.store');
     });
 

@@ -9,6 +9,7 @@ use App\Models\Service;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use function PHPUnit\Framework\stringContains;
@@ -73,6 +74,9 @@ class BookingController extends Controller {
         }
 
         return Inertia::render('Bookings/Create', [
+            'requiresDuration' => $service->requiresDuration(),
+            'hasDuration' => $service->hasDuration(),
+            'allDay' => $service->allDay(),
             'nextMonth' => Carbon::parse($month . '/' . '01/' . $year)->addMonth()->format('m'),
             'nextYear' => Carbon::parse($month . '/' . '01/' . $year)->addMonth()->format('Y'),
             'prevMonth' => Carbon::parse($month . '/' . '01/' . $year)->subMonth()->format('m'),
@@ -91,7 +95,331 @@ class BookingController extends Controller {
         ]);
     }
 
-    //returns time slots to view
+    public function allDayTimeSlots(Company $company, Service $service, $day = null, $month = null, $year = null, $duration = null)
+    {
+        if(! $month) $month = Carbon::now()->format('m');
+        if(! $year) $year = Carbon::now()->format('Y');
+        if(! $day) $day = Carbon::now()->format('d');
+
+        $dayDigit = $day;
+        $now = Carbon::parse($month . '/' . $day . '/' . $year);
+        $queryDate = Carbon::parse($month . '/' . $dayDigit . '/' . $year);
+
+        $day = strtolower(Carbon::parse($month . '/' . $day . '/' . $year)->format('l'));
+
+        //all company bookings for that day
+        //change $service to $company if you want the bookings to be whole company related not service related
+        $bookings = $service->bookings()->get()->map(fn($booking) => [
+            'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+            'start_time' => Carbon::parse($booking->date_booked)->format('Y-m-d H:i'),
+            'end_time' => Carbon::parse($booking->date_booked)->addMinutes($booking->duration)->format('Y-m-d H:i'),
+            'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+            'service_duration' => $booking->service->duration,
+        ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+
+        $dayHours = $company->workingHours($day);
+        $quantity = $service->quantity;
+        //check if there's a quantity if so check how many bookings there are so far
+        if($quantity)
+        {
+            //if there are less booking than quantity do below
+            if($bookings->count() < $quantity)
+            {
+                $availability = $quantity - $bookings->count();
+                // return as $times single item array saying 5 slots available
+                $date = $dayHours[array_key_first($dayHours)];
+                $dateAfter = $dayHours[array_key_last($dayHours)];
+                $times = [0 => "$availability Items left for booking for $date until $dateAfter"];
+
+            } else
+            {
+                //setting the times to an empty array enables the v-else on the view to show there are no bookings
+                $times = [];
+            }
+
+        }
+        //gets single items for all day bookings
+        if(! $quantity)
+        {
+            if($bookings->count() < 1)
+            {
+                $date = $dayHours[array_key_first($dayHours)];
+                $dateAfter = $dayHours[array_key_last($dayHours)];
+                $times = [0 => "Item available for {$date} until  {$dateAfter}"];
+            } else
+            {
+                //setting the times to an empty array enables the v-else on the view to show there are no bookings
+                $times = [];
+            }
+        }
+        $startDays = $this->offsetDays($month, $year);
+        $days = $this->roundDays($month, $year);
+
+        return Inertia::render('Bookings/Create', [
+            'requiresDuration' => $service->requiresDuration(),
+            'hasDuration' => $service->hasDuration(),
+            'allDay' => $service->allDay(),
+            'nextMonth' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->addMonth()->format('m'),
+            'nextYear' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->addMonth()->format('Y'),
+            'prevMonth' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->subMonth()->format('m'),
+            'prevYear' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->subMonth()->format('Y'),
+            'startDays' => floatval($startDays),
+            'today' => Carbon::now()->format('d') . Carbon::now()->format('m') . Carbon::now()->format('Y'),
+            'isPast' => $now->isPast(),
+            'now' => $now->format('Y/M'),
+            'month' => $now->format('m'),
+            'monthName' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'day' => $dayDigit,
+            'daysAmount' => $days,
+            'company' => $company,
+            'service' => $service,
+            'times' => $times,
+            'dateBooked' => $month . '/' . $dayDigit . '/' . $year,
+            'duration' => $duration,
+        ]);
+
+    }
+
+    public function hasDurationTimeSlots(Company $company, Service $service, $day = null, $month = null, $year = null, $duration = null)
+    {
+
+        if(! $month) $month = Carbon::now()->format('m');
+        if(! $year) $year = Carbon::now()->format('Y');
+        if(! $day) $day = Carbon::now()->format('d');
+
+        $dayDigit = $day;
+        $now = Carbon::parse($month . '/' . $day . '/' . $year);
+        $queryDate = Carbon::parse($month . '/' . $dayDigit . '/' . $year);
+
+        $day = strtolower(Carbon::parse($month . '/' . $day . '/' . $year)->format('l'));
+
+        //all company bookings for that day
+        //change $service to $company if you want the bookings to be whole company related not service related
+        $bookings = $service->bookings()->get()->map(fn($booking) => [
+            'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+            'start_time' => Carbon::parse($booking->date_booked)->format('Y-m-d H:i'),
+            'end_time' => Carbon::parse($booking->date_booked)->addMinutes($booking->duration)->format('Y-m-d H:i'),
+            'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+            'service_duration' => $booking->service->duration,
+        ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+
+        $dayHours = $company->workingHours($day);
+        $times = $this->times($dayHours);
+
+        //Check if there are any times returned if so this function removes all the currently booked slots and times
+        if($times && $dayHours)
+        {
+            foreach($times as $time)
+            {
+                $dayTime = \Carbon\Carbon::parse($now->format('Y-m-d') . ' ' . $time);
+                $bookingsFiltered = $bookings->where('start_time', '<=', $dayTime->addMinutes($service->duration))->where('end_time', '>=', $dayTime->subMinutes($service->duration))->count();
+                $offsetBeforeBookings = $bookings->whereBetween('start_time', [Carbon::parse($queryDate->format('Y-m-d') . ' ' . $time), Carbon::parse($queryDate->format('Y-m-d') . ' ' . $time)->addMinutes($service->duration)])->count();
+                //quantity greater than bookings amount
+                if($service->quantity)
+                {
+                    //get all booking between the foreach time to get the count to compare it against the quantity if its over or equal remove the slot
+                    if($bookingsFiltered >= $service->quantity)
+                    {
+                        unset($times[array_search($time, $times)]);
+                    }
+                }
+                if(! $service->quantity)
+                {
+                    if($bookingsFiltered > 0 || $offsetBeforeBookings > 0)
+                    {
+                        unset($times[array_search($time, $times)]);
+                    }
+                }
+            }
+        }
+
+        $times = $this->isCurrentDay($times, $dayHours, $queryDate);
+        $times = $this->endOfDay($times, $dayHours, $queryDate, $service->duration);
+        $startDays = $this->offsetDays($month, $year);
+        $days = $this->roundDays($month, $year);
+
+        return Inertia::render('Bookings/Create', [
+            'requiresDuration' => $service->requiresDuration(),
+            'hasDuration' => $service->hasDuration(),
+            'allDay' => $service->allDay(),
+            'nextMonth' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->addMonth()->format('m'),
+            'nextYear' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->addMonth()->format('Y'),
+            'prevMonth' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->subMonth()->format('m'),
+            'prevYear' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->subMonth()->format('Y'),
+            'startDays' => floatval($startDays),
+            'today' => Carbon::now()->format('d') . Carbon::now()->format('m') . Carbon::now()->format('Y'),
+            'isPast' => $now->isPast(),
+            'now' => $now->format('Y/M'),
+            'month' => $now->format('m'),
+            'monthName' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'day' => $dayDigit,
+            'daysAmount' => $days,
+            'company' => $company,
+            'service' => $service,
+            'times' => $times,
+            'dateBooked' => $month . '/' . $dayDigit . '/' . $year,
+            'duration' => $duration,
+        ]);
+
+    }
+
+    public function requiresDurationTimeSlots(Company $company, Service $service, $day = null, $month = null, $year = null, $duration = null)
+    {
+        if(! $month) $month = Carbon::now()->format('m');
+        if(! $year) $year = Carbon::now()->format('Y');
+        if(! $day) $day = Carbon::now()->format('d');
+
+        $dayDigit = $day;
+        $now = Carbon::parse($month . '/' . $day . '/' . $year);
+        $queryDate = Carbon::parse($month . '/' . $dayDigit . '/' . $year);
+
+        $day = strtolower(Carbon::parse($month . '/' . $day . '/' . $year)->format('l'));
+
+        //all company bookings for that day
+        //change $service to $company if you want the bookings to be whole company related not service related
+        $bookings = $service->bookings()->get()->map(fn($booking) => [
+            'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
+            'start_time' => Carbon::parse($booking->date_booked)->format('Y-m-d H:i'),
+            'end_time' => Carbon::parse($booking->date_booked)->addMinutes($booking->duration)->format('Y-m-d H:i'),
+            'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
+            'service_duration' => $booking->duration,
+        ])->where('date_booked', '=', $queryDate->format('Y-m-d'));
+
+        $dayHours = $company->workingHours($day);
+        $times = $this->times($dayHours);
+        $duration = $duration - ($duration % 15);
+        //Check if there are any times returned if so this function removes all the currently booked slots and times
+        if($times && $dayHours)
+        {
+            foreach($times as $time)
+            {
+                $dayTime = \Carbon\Carbon::parse($now->format('Y-m-d') . ' ' . $time);
+                $bookingsFiltered = $bookings->where('start_time', '<=', $dayTime->addMinutes($duration))->where('end_time', '>=', $dayTime->subMinutes($duration))->count();
+                $offsetBeforeBookings = $bookings->whereBetween('start_time', [Carbon::parse($queryDate->format('Y-m-d') . ' ' . $time), Carbon::parse($queryDate->format('Y-m-d') . ' ' . $time)->addMinutes($duration)])->count();
+                //quantity greater than bookings amount
+                if($service->quantity)
+                {
+                    //get all booking between the foreach time to get the count to compare it against the quantity if its over or equal remove the slot
+                    if($bookingsFiltered >= $service->quantity)
+                    {
+                        unset($times[array_search($time, $times)]);
+                    }
+                }
+                if(! $service->quantity)
+                {
+                    if($bookingsFiltered > 0 || $offsetBeforeBookings > 0)
+                    {
+                        unset($times[array_search($time, $times)]);
+                    }
+                }
+            }
+        }
+        $times = $this->isCurrentDay($times, $dayHours, $queryDate);
+        $times = $this->endOfDay($times, $dayHours, $queryDate, $duration);
+        $startDays = $this->offsetDays($month, $year);
+        $days = $this->roundDays($month, $year);
+
+        return Inertia::render('Bookings/Create', [
+            'requiresDuration' => $service->requiresDuration(),
+            'hasDuration' => $service->hasDuration(),
+            'allDay' => $service->allDay(),
+            'nextMonth' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->addMonth()->format('m'),
+            'nextYear' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->addMonth()->format('Y'),
+            'prevMonth' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->subMonth()->format('m'),
+            'prevYear' => Carbon::parse($month . '/' . $dayDigit . '/' . $year)->subMonth()->format('Y'),
+            'startDays' => floatval($startDays),
+            'today' => Carbon::now()->format('d') . Carbon::now()->format('m') . Carbon::now()->format('Y'),
+            'isPast' => $now->isPast(),
+            'now' => $now->format('Y/M'),
+            'month' => $now->format('m'),
+            'monthName' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'day' => $dayDigit,
+            'daysAmount' => $days,
+            'company' => $company,
+            'service' => $service,
+            'times' => $times,
+            'dateBooked' => $month . '/' . $dayDigit . '/' . $year,
+            'duration' => $duration,
+        ]);
+
+    }
+
+    public function offsetDays($month, $year)
+    {
+
+        //gets the days of the week to offset it with
+        $startDays = Carbon::parse($month . '/' . '01/' . $year)->startOfMonth()->format('w');
+        if($startDays == 0)
+        {
+            $startDays = 6;
+        } else
+        {
+            $startDays--;
+        }
+
+        return $startDays;
+    }
+
+    public function roundDays($month, $year)
+    {
+        //adds a 0  to the date format instead of 9062022 it would append a 0 like 09062022
+        $days = [];
+        $i = 1;
+        while(floatval(Carbon::parse($month . '/' . '01' . '/' . $year)->endOfMonth()->format('j')) > $i)
+        {
+            $days [] = sprintf("%02d", $i);
+            $i++;
+        }
+
+        return $days;
+    }
+
+    public function times($dayHours)
+    {
+        //get all the hours within the companies addressed working hours from the database and push to an array
+        $hoursInDay = Hour::hoursBetween($dayHours[array_key_first($dayHours)], $dayHours[array_key_last($dayHours)]);
+
+        return Hour::timeToArray($hoursInDay, 15, $dayHours[array_key_first($dayHours)], $dayHours[array_key_last($dayHours)]);
+    }
+
+    public function isCurrentDay($times, $dayHours, $queryDate)
+    {
+        //if it's the current day offset the array with how many hours the day has been through the working day -- all types do this
+        if($queryDate->isCurrentDay())
+        {
+            //if the time now is before the hours start time of the business ignore it
+            if(! Carbon::parse(now()->addHour())->isBefore(now()->format('m/d/Y') . ' ' . $dayHours[array_key_first($dayHours)]))
+            {
+                $hourTillPresent = Hour::hoursBetween($dayHours[array_key_first($dayHours)], Carbon::now()->addHour()->format('H:i'));
+                $timesSoFar = Hour::timeToArray($hourTillPresent, 15, $dayHours[array_key_first($dayHours)], $dayHours[array_key_last($dayHours)]);
+                $times = array_diff_key($times, $timesSoFar);
+            }
+        }
+
+        return $times;
+    }
+
+    public function endOfDay($times, $dayHours, $queryDate, $duration)
+    {
+        //checks if the duration runs over the closing time of the company if so remove it
+        foreach($times as $time)
+        {
+            $queryTime = Carbon::parse($queryDate->format('m/d/Y') . ' ' . $time);
+            $endTime = Carbon::parse($queryDate->format('m/d/Y') . ' ' . $dayHours[array_key_last($dayHours)]);
+            if($queryTime->addMinutes($duration)->isAfter($endTime))
+            {
+                $arrayKey = array_search($time, $times);
+                unset($times[$arrayKey]);
+            }
+        }
+
+        return $times;
+    }
+
+//returns time slots to view
     public function timeSlots(Company $company, Service $service, $day = null, $month = null, $year = null, $duration = null)
     {
         if(! $month) $month = Carbon::now()->format('m');
@@ -110,7 +438,7 @@ class BookingController extends Controller {
             //change $service to $company if you want the bookings to be whole company related not service related
             $bookings = $service->bookings()->get()->map(fn($booking) => [
                 'date_booked' => Carbon::parse($booking->date_booked)->format('Y-m-d'),
-                'start_time' => Carbon::parse($booking->date_booked)->addMinute()->format('Y-m-d H:i'),
+                'start_time' => Carbon::parse($booking->date_booked)->format('Y-m-d H:i'),
                 'end_time' => Carbon::parse($booking->date_booked)->addMinutes($booking->duration)->format('Y-m-d H:i'),
                 'time_booked' => Carbon::parse($booking->date_booked)->format('H:i'),
                 'service_duration' => $booking->duration,
@@ -165,8 +493,7 @@ class BookingController extends Controller {
                             $afterDuration = Carbon::createFromTimeString($booked['time_booked'])->addMinutes($booked['service_duration'])->subMinute();
                             $timeFromString = Carbon::createFromTimeString($time);
                             $bookingsBetweenTime = $bookings->where('start_time', '<=', $t)->where('end_time', '>=', $t)->count();
-
-                            if($service->quantity && $duration)
+                            if($service->quantity && $duration && $service->hasDuration())
                             {
                                 //get all booking between the foreach time to get the count to compare it against the quantity if its over or equal remove the slot
                                 if($bookingsBetweenTime >= $service->quantity)
@@ -181,8 +508,23 @@ class BookingController extends Controller {
                                     unset($times[array_search($time, $times)]);
                                 }
                             }
+
                             //This code below is for custom duration booking which finds any booking between the foreach time and foreach time + duration against the  start time if there is remove the time.
-                            if($bookings->whereBetween('start_time', [Carbon::parse($booked['date_booked'] . ' ' . $time), Carbon::parse($booked['date_booked'] . ' ' . $time)->addMinutes($duration)])->count() > 0)
+
+                            $book = Collection::empty();
+                            //9:30                          9:30                               10:30
+                            if($t->isBetween(Carbon::parse($booked['start_time']), Carbon::parse($booked['end_time'])))
+                            {
+                                $book->push($booked);
+                            }
+
+                            if($service->quantity && $book->count() >= $service->quantity)
+                            {
+                                unset($times[array_search($time, $times)]);
+                            }
+                            $betweenBookings = $bookings->whereBetween('start_time', [Carbon::parse($booked['date_booked'] . ' ' . $time), Carbon::parse($booked['date_booked'] . ' ' . $time)->addMinutes($duration)])->count();
+                            //default
+                            if(! $service->quantity && $betweenBookings > 0)
                             {
                                 unset($times[array_search($time, $times)]);
                             }
@@ -190,6 +532,7 @@ class BookingController extends Controller {
                     }
                 }
             }
+
             //if it's the current day offset the array with how many hours the day has been through the working day -- all types do this
             if($queryDate->isCurrentDay())
             {
@@ -213,6 +556,7 @@ class BookingController extends Controller {
                 }
             }
         }
+
         //this is for the all day bookings to pass through
         if($service->allDay())
         {
@@ -291,7 +635,8 @@ class BookingController extends Controller {
         ]);
     }
 
-    public function store(Company $company, Service $service, Request $request)
+    public
+    function store(Company $company, Service $service, Request $request)
     {
 
         if($service->allDay())
@@ -322,7 +667,8 @@ class BookingController extends Controller {
      * @param \App\Models\Booking $booking
      * @return \Illuminate\Http\Response
      */
-    public function show(Booking $booking)
+    public
+    function show(Booking $booking)
     {
         //
     }
@@ -333,7 +679,8 @@ class BookingController extends Controller {
      * @param \App\Models\Booking $booking
      * @return \Illuminate\Http\Response
      */
-    public function edit(Booking $booking)
+    public
+    function edit(Booking $booking)
     {
         //
     }
@@ -345,12 +692,14 @@ class BookingController extends Controller {
      * @param \App\Models\Booking      $booking
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Booking $booking)
+    public
+    function update(Request $request, Booking $booking)
     {
         //
     }
 
-    public function destroy(Booking $booking)
+    public
+    function destroy(Booking $booking)
     {
         $booking->delete();
 
